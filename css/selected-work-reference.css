@@ -12,7 +12,7 @@
     linear-gradient(135deg,#080909 0%,#0a0b0c 58%,#070808 100%) !important;
 }
 
-/* Hard-stop every legacy visual layer. */
+/* Keep the image treatment deterministic and free of decorative overlays. */
 .project-featured .project-image-trivia::before,
 .project-featured .project-image-trivia::after,
 .project-featured .project-image-trivia img,
