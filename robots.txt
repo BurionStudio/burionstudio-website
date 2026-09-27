@@ -1,4 +1,16 @@
+# Burion Studio — public AI/search crawling
 User-agent: *
+Allow: /
+
+# Google Search / Gemini ecosystem
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# ChatGPT Search
+User-agent: OAI-SearchBot
 Allow: /
 
 Sitemap: https://burionstudio.com/sitemap.xml
