@@ -1,5 +1,6 @@
 wrangler.jsonc
 .assetsignore
+worker.js
 docs/
 .github/
 README.md
