@@ -51,14 +51,14 @@
 .project-featured .project-image-trivia .project-image-content strong{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:clamp(47px,5.6vw,70px);letter-spacing:-.055em;line-height:.9;color:#f1eee7}
 .project-featured .project-image-trivia .project-image-content strong::after{content:"";display:block;width:64px;height:1px;margin-top:18px;background:linear-gradient(90deg,var(--gold-light),rgba(215,169,87,.15));box-shadow:0 0 16px rgba(215,169,87,.12)}
 .project-featured .project-image-trivia .project-image-content small{margin-top:25px;color:rgba(205,201,193,.52);font-size:7px;letter-spacing:.2em;line-height:1.8}
-.project-featured .project-image-trivia .project-device{right:9%;bottom:8%;z-index:5;width:142px;height:270px;border:1px solid rgba(255,255,255,.16);border-radius:24px;background:linear-gradient(145deg,#303236,#0a0b0c 30%,#17191a);box-shadow:-18px 25px 45px rgba(0,0,0,.45),8px 0 28px rgba(215,169,87,.045),inset 1px 0 0 rgba(255,255,255,.13);transform:rotate(6deg);transition:transform .55s var(--ease),box-shadow .55s ease}
-.project-featured .project-image-trivia .project-device::before{content:"";position:absolute;right:118%;top:14%;width:122px;height:232px;border:1px solid rgba(255,255,255,.085);border-radius:21px;background:linear-gradient(145deg,#222528,#090a0b 38%,#111314);box-shadow:-8px 18px 30px rgba(0,0,0,.34);transform:rotate(-10deg);opacity:.74;z-index:-1}
+
+
 .project-featured:hover .project-image-trivia .project-device{transform:rotate(3deg) translateY(-4px);box-shadow:-22px 31px 52px rgba(0,0,0,.5),8px 0 34px rgba(215,169,87,.07),inset 1px 0 0 rgba(255,255,255,.14)}
-.project-featured .project-device-screen{background:linear-gradient(180deg,#080909,#111314);border:1px solid rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(0,0,0,.5);padding:18px 8px 8px}
-.project-featured .project-device-top{color:var(--gold-light);font-family:"Playfair Display",Georgia,serif;font-size:12px;letter-spacing:.12em}
+
+
 .project-featured .project-device-top span{color:rgba(255,255,255,.32);font-family:"DM Sans",sans-serif;font-size:6px;letter-spacing:.08em}
-.project-featured .project-device-question{color:#eeeae2;font-size:8px;line-height:1.45;margin-top:24px}
-.project-featured .project-device-option{border:1px solid rgba(255,255,255,.055);background:rgba(255,255,255,.035);border-radius:7px;color:rgba(235,231,222,.74);padding:6px 6px;margin-top:5px;font-size:6.5px;transition:border-color .2s ease,background .2s ease}
+
+
 .project-featured .project-device-option.active{border-color:rgba(215,169,87,.42);background:rgba(215,169,87,.07);color:#f1eee7;box-shadow:0 0 0 1px rgba(215,169,87,.04),0 4px 16px rgba(0,0,0,.18)}
 .project-featured .project-info{background:linear-gradient(180deg,rgba(255,255,255,.012),rgba(255,255,255,.005));display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px;padding:18px 25px 19px;border-top:1px solid rgba(255,255,255,.065)}
 .project-featured .project-info::before{content:"GENRE   TRIVIA / QUIZ    ·    PLATFORM   MOBILE    ·    STATUS   IN DEVELOPMENT";display:none}
@@ -71,12 +71,12 @@
   .project-featured .project-image-trivia .project-image-content strong{font-size:clamp(42px,13vw,57px)!important}
   .project-featured .project-image-trivia .project-image-content strong::after{width:46px;margin-top:14px}
   .project-featured .project-image-trivia .project-image-content small{font-size:6px;margin-top:18px}
-  .project-featured .project-image-trivia .project-device{right:6%;bottom:7%;width:104px;height:198px;border-radius:19px;transform:rotate(5deg)}
-  .project-featured .project-image-trivia .project-device::before{right:106%;top:12%;width:88px;height:174px;border-radius:17px;transform:rotate(-9deg)}
-  .project-featured .project-device-screen{padding:14px 6px 6px;border-radius:14px}
-  .project-featured .project-device-top{font-size:9px}
-  .project-featured .project-device-question{font-size:6.4px;margin-top:16px}
-  .project-featured .project-device-option{padding:5px 4px;margin-top:4px;font-size:5.5px}
+  
+  
+  
+  
+  
+  
   .project-featured .project-info{grid-template-columns:minmax(0,1fr) auto;padding:16px 18px 17px;gap:12px}
   .project-featured .project-info h3{font-size:18px!important}
   .project-featured .project-info p{font-size:10px!important}
@@ -86,9 +86,9 @@
   .project-featured .project-image-trivia .project-image-content span{font-size:6.5px;margin-bottom:11px}
   .project-featured .project-image-trivia .project-image-content strong{font-size:clamp(38px,12.5vw,50px)!important}
   .project-featured .project-image-trivia .project-image-content small{font-size:5.5px;letter-spacing:.16em;margin-top:15px}
-  .project-featured .project-image-trivia .project-device{right:5%;bottom:6%;width:92px;height:176px}
-  .project-featured .project-image-trivia .project-device::before{width:77px;height:154px}
+  
+  
   .project-featured .project-info{grid-template-columns:1fr;gap:10px}
   .project-featured .project-status{width:max-content}
 }
-@media (prefers-reduced-motion:reduce){.project-featured .project-image-trivia .project-device{transition:none}.project-featured:hover .project-image-trivia .project-device{transform:rotate(6deg)}}
+@media (prefers-reduced-motion:reduce){.project-featured:hover .project-image-trivia .project-device{transform:rotate(6deg)}}
