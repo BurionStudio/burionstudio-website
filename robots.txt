@@ -1,5 +1,6 @@
 # Burion Studio — public AI/search crawling
 User-agent: *
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 Allow: /
 
 # Google Search / Gemini ecosystem
