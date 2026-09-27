@@ -22,12 +22,6 @@
   .project-featured .project-image-trivia{height:338px!important;min-height:338px!important;aspect-ratio:auto!important;border-radius:17px 17px 0 0}
   .project-featured .project-image-content{left:0;top:49%;width:54%;padding-left:14px!important;transform:translateY(-50%);z-index:3}.project-featured .project-image-content span{margin-bottom:25px;font-size:7px!important;letter-spacing:.18em}.project-featured .project-image-content strong{font-size:clamp(43px,12.7vw,56px)!important;line-height:.86!important;letter-spacing:-.055em}.project-featured .project-image-content small{margin-top:25px;font-size:5px!important;line-height:2.15;letter-spacing:.15em}
 
-  /* Front device: reference-style scale and angle. */
-  .trivia-device-question{right:9%;top:3%;width:112px;height:218px;border-radius:22px;padding:5px;transform:rotate(7deg);z-index:6}.trivia-device-question .trivia-screen{padding:0 7px}.trivia-device::before{top:4px;width:35px;height:8px;border-radius:0 0 6px 6px}.trivia-status{top:6px;left:7px;right:7px;font-size:3.5px}.trivia-title{gap:8px;margin-top:23px}.trivia-title span{font-size:9px}.trivia-title strong{font-size:9px}.question-kicker{margin-top:11px;font-size:3.5px}.question-text{margin-top:6px;font-size:7.2px;line-height:1.32}.answer{height:21px;margin-top:4px;padding:0 5px;border-radius:6px;font-size:4.8px}.answer>b{font-size:6px}.trivia-tools{left:7px;right:7px;bottom:12px;font-size:9px}.trivia-tools small{font-size:3.4px}.home-indicator{bottom:5px;width:32px;height:2px}
-
-  /* Back device sits behind and slightly lower. */
-  .trivia-device-leaderboard{right:-1%;top:17%;width:96px;height:187px;border-radius:20px;padding:5px;transform:rotate(4deg);z-index:5}.trivia-device-leaderboard .trivia-screen{padding:0 6px}.leaderboard-head{gap:6px;margin-top:23px;padding:0 2px}.trophy{width:20px;height:20px;font-size:9px}.leaderboard-head small{font-size:3px}.leaderboard-head strong{font-size:10px}.leaderboard-head em{margin-top:2px;font-size:3px}.leader-row{height:25px;gap:4px;margin-top:4px;padding:0 4px;border-radius:5px}.avatar{width:10px;height:10px;flex-basis:10px;font-size:3px}.leader-row b,.leader-row strong{font-size:3.5px}.leaderboard-button{height:20px;margin-top:4px;padding:0 5px;border-radius:5px;font-size:3.2px}.leaderboard-button span{font-size:6px}
-
   /* Clean, shorter lower panel. */
   .project-featured .redesign-project-info{min-height:156px!important;padding:19px 23px 18px!important;border-radius:0 0 17px 17px;display:block}.project-featured .redesign-project-info .project-category{font-size:7px;letter-spacing:.14em}.project-featured .redesign-project-info h3{margin:7px 0 6px;font-size:21px}.project-featured .redesign-project-info p{max-width:330px;font-size:11.5px;line-height:1.52}.project-featured .redesign-project-info .project-status{display:inline-flex;margin-top:13px;padding:7px 12px;font-size:6.5px}
   .projects-pagination{margin-top:14px!important}
@@ -41,7 +35,7 @@
 }
 
 @media (max-width:360px){
-  .project-featured .project-image-trivia{height:320px!important;min-height:320px!important}.trivia-device-question{right:7%;width:100px;height:195px}.trivia-device-leaderboard{width:87px;height:171px}.project-featured .project-image-content{width:52%}.project-featured .project-image-content strong{font-size:42px!important}
+  .project-featured .project-image-trivia{height:320px!important;min-height:320px!important}.project-featured .project-image-content{width:52%}.project-featured .project-image-content strong{font-size:42px!important}
 }
 
 @media (prefers-reduced-motion:reduce){.projects-track,.projects-arrow{transition:none!important}}
