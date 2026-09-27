@@ -1,8 +1,11 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "cool-wind-2ec9",
+  "main": "worker.js",
   "compatibility_date": "2026-08-30",
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": true
   }
 }
