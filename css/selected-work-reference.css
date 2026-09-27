@@ -16,8 +16,6 @@
 .project-featured .project-image-trivia::before,
 .project-featured .project-image-trivia::after,
 .project-featured .project-image-trivia img,
-.project-featured .project-image-trivia .trivia-device,
-.project-featured .project-image-trivia .project-device,
 .project-featured .project-image-trivia > :not(.project-image-content){
   display:none !important;
   visibility:hidden !important;
