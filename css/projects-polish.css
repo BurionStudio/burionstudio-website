@@ -51,15 +51,6 @@
 .project-featured .project-image-trivia .project-image-content strong{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:clamp(47px,5.6vw,70px);letter-spacing:-.055em;line-height:.9;color:#f1eee7}
 .project-featured .project-image-trivia .project-image-content strong::after{content:"";display:block;width:64px;height:1px;margin-top:18px;background:linear-gradient(90deg,var(--gold-light),rgba(215,169,87,.15));box-shadow:0 0 16px rgba(215,169,87,.12)}
 .project-featured .project-image-trivia .project-image-content small{margin-top:25px;color:rgba(205,201,193,.52);font-size:7px;letter-spacing:.2em;line-height:1.8}
-
-
-.project-featured:hover .project-image-trivia .project-device{transform:rotate(3deg) translateY(-4px);box-shadow:-22px 31px 52px rgba(0,0,0,.5),8px 0 34px rgba(215,169,87,.07),inset 1px 0 0 rgba(255,255,255,.14)}
-
-
-.project-featured .project-device-top span{color:rgba(255,255,255,.32);font-family:"DM Sans",sans-serif;font-size:6px;letter-spacing:.08em}
-
-
-.project-featured .project-device-option.active{border-color:rgba(215,169,87,.42);background:rgba(215,169,87,.07);color:#f1eee7;box-shadow:0 0 0 1px rgba(215,169,87,.04),0 4px 16px rgba(0,0,0,.18)}
 .project-featured .project-info{background:linear-gradient(180deg,rgba(255,255,255,.012),rgba(255,255,255,.005));display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px;padding:18px 25px 19px;border-top:1px solid rgba(255,255,255,.065)}
 .project-featured .project-info::before{content:"GENRE   TRIVIA / QUIZ    ·    PLATFORM   MOBILE    ·    STATUS   IN DEVELOPMENT";display:none}
 .project-featured .project-info h3{font-family:"Playfair Display",Georgia,serif;font-size:21px;font-weight:600;letter-spacing:-.02em}
@@ -91,4 +82,4 @@
   .project-featured .project-info{grid-template-columns:1fr;gap:10px}
   .project-featured .project-status{width:max-content}
 }
-@media (prefers-reduced-motion:reduce){.project-featured:hover .project-image-trivia .project-device{transform:rotate(6deg)}}
+@media (prefers-reduced-motion:reduce){}
