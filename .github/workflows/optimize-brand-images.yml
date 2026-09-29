@@ -33,7 +33,9 @@ jobs:
           const fs = require('fs');
 
           const files = [
-            ['assets/brand/burion-hero-lion.jpg', 'assets/brand/burion-hero-lion.webp', 1080, 'hero']
+            ['assets/brand/burion-hero-lion.jpg', 'assets/brand/burion-hero-lion-480.webp', 480, 'hero-mobile'],
+            ['assets/brand/burion-hero-lion.jpg', 'assets/brand/burion-hero-lion-768.webp', 768, 'hero'],
+            ['assets/brand/burion-hero-lion.jpg', 'assets/brand/burion-hero-lion-1080.webp', 1080, 'hero']
           ];
 
           const responsive = [
@@ -47,10 +49,12 @@ jobs:
               if (!fs.existsSync(src)) continue;
               const image = sharp(src);
               const pipeline = width ? image.resize({ width, withoutEnlargement: true }) : image;
-              if (kind === 'hero') {
-                await pipeline.webp({ quality: 80, effort: 6 }).toFile(dst);
+              if (kind === 'hero-mobile') {
+                await pipeline.webp({ quality: 72, effort: 6 }).toFile(dst);
+              } else if (kind === 'hero') {
+                await pipeline.webp({ quality: 74, effort: 6 }).toFile(dst);
               } else {
-                await pipeline.webp({ quality: 78, effort: 6, alphaQuality: 90 }).toFile(dst);
+                await pipeline.webp({ quality: 70, effort: 6, alphaQuality: 88 }).toFile(dst);
               }
             }
 
