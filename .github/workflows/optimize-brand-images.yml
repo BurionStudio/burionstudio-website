@@ -33,16 +33,16 @@ jobs:
           const fs = require('fs');
 
           const files = [
-            ['assets/brand/burion-hero-lion.jpg', 'assets/brand/burion-hero-lion.webp', 1600, 'hero'],
-            ['assets/brand/burion-logo-horizontal.png', 'assets/brand/burion-logo-horizontal.webp', null, 'logo'],
-            ['assets/brand/burion-logo-gold.png', 'assets/brand/burion-logo-gold.webp', null, 'logo'],
-            ['assets/brand/burion-logo-mark.png', 'assets/brand/burion-logo-mark.webp', null, 'logo']
+            ['assets/brand/burion-hero-lion.jpg', 'assets/brand/burion-hero-lion.webp', 1600, 'hero']
           ];
 
           const responsive = [
-            ['assets/brand/burion-logo-horizontal.png', 'assets/brand/burion-logo-horizontal-320.webp', 320],
-            ['assets/brand/burion-logo-gold.png', 'assets/brand/burion-logo-gold-320.webp', 320],
-            ['assets/brand/burion-logo-mark.png', 'assets/brand/burion-logo-mark-320.webp', 320]
+            ['assets/brand/burion-logo-horizontal.webp', 'assets/brand/burion-logo-horizontal-256.webp', 256],
+            ['assets/brand/burion-logo-horizontal.webp', 'assets/brand/burion-logo-horizontal-512.webp', 512],
+            ['assets/brand/burion-logo-gold.webp', 'assets/brand/burion-logo-gold-256.webp', 256],
+            ['assets/brand/burion-logo-gold.webp', 'assets/brand/burion-logo-gold-512.webp', 512],
+            ['assets/brand/burion-logo-mark.webp', 'assets/brand/burion-logo-mark-192.webp', 192],
+            ['assets/brand/burion-logo-mark.webp', 'assets/brand/burion-logo-mark-384.webp', 384]
           ];
 
           (async () => {
