@@ -38,11 +38,11 @@ jobs:
 
           const responsive = [
             ['assets/brand/burion-logo-horizontal.webp', 'assets/brand/burion-logo-horizontal-320.webp', 320],
-            ['assets/brand/burion-logo-horizontal.webp', 'assets/brand/burion-logo-horizontal-640.webp', 640],
+            ['assets/brand/burion-logo-horizontal.webp', 'assets/brand/burion-logo-horizontal-384.webp', 384],
             ['assets/brand/burion-logo-gold.webp', 'assets/brand/burion-logo-gold-320.webp', 320],
-            ['assets/brand/burion-logo-gold.webp', 'assets/brand/burion-logo-gold-640.webp', 640],
+            ['assets/brand/burion-logo-gold.webp', 'assets/brand/burion-logo-gold-512.webp', 512],
             ['assets/brand/burion-logo-mark.webp', 'assets/brand/burion-logo-mark-320.webp', 320],
-            ['assets/brand/burion-logo-mark.webp', 'assets/brand/burion-logo-mark-640.webp', 640]
+            ['assets/brand/burion-logo-mark.webp', 'assets/brand/burion-logo-mark-384.webp', 384]
           ];
 
           (async () => {
