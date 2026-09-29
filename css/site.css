@@ -360,4 +360,3 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:0}
 /* ===== PERFORMANCE + ACCESSIBILITY POLISH 2026-09-29 ===== */
 .about-visual>span{color:rgba(255,255,255,.58)!important}
 .about-role{color:rgba(255,255,255,.54)!important}
-.redesign-projects,.redesign-build,.redesign-about,.redesign-contact,.site-footer{content-visibility:auto;contain-intrinsic-size:auto 700px}
