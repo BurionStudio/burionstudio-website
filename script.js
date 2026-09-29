@@ -1,6 +1,3 @@
-const loadSiteStyles=()=>{const l=document.createElement("link");l.rel="stylesheet";l.href="css/site.css?v=20260929-7";document.head.appendChild(l);};
-const schedule=window.requestIdleCallback||((cb)=>setTimeout(cb,0));
-schedule(loadSiteStyles);
 document.addEventListener("DOMContentLoaded",()=>{
   const q=s=>document.querySelector(s), menu=q("#mobileMenu"), menuBtn=q(".menu-button");
   if(menuBtn&&menu){menuBtn.addEventListener("click",()=>{const open=menuBtn.getAttribute("aria-expanded")==="true";menuBtn.setAttribute("aria-expanded",String(!open));menuBtn.setAttribute("aria-label",!open?"Close menu":"Open menu");menuBtn.classList.toggle("is-open",!open);menu.hidden=open;});}
