@@ -50,11 +50,11 @@ jobs:
               const image = sharp(src);
               const pipeline = width ? image.resize({ width, withoutEnlargement: true }) : image;
               if (kind === 'hero-mobile') {
-                await pipeline.webp({ quality: 72, effort: 6 }).toFile(dst);
+                await pipeline.webp({ quality: 68, effort: 6 }).toFile(dst);
               } else if (kind === 'hero') {
-                await pipeline.webp({ quality: 74, effort: 6 }).toFile(dst);
+                await pipeline.webp({ quality: 70, effort: 6 }).toFile(dst);
               } else {
-                await pipeline.webp({ quality: 70, effort: 6, alphaQuality: 88 }).toFile(dst);
+                await pipeline.webp({ quality: 64, effort: 6, alphaQuality: 84 }).toFile(dst);
               }
             }
 
