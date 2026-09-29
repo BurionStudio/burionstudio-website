@@ -114,4 +114,5 @@ jobs:
           git add assets/brand/*.webp assets/fonts/*.woff2 css/fonts.css
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'chore(perf): optimize responsive images and self-host fonts [skip ci]'
+          git pull --rebase origin "$GITHUB_REF_NAME"
           git push
