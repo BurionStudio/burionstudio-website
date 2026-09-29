@@ -15,7 +15,6 @@ permissions:
 jobs:
   optimize:
     runs-on: ubuntu-latest
-    if: ${{ !startsWith(github.event.head_commit.message, 'chore(images): optimize brand assets') }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
