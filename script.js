@@ -4,8 +4,6 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll(".mobile-nav a,.desktop-nav a,.footer-nav a").forEach(a=>a.addEventListener("click",()=>{if(menu&&menuBtn){menu.hidden=true;menuBtn.setAttribute("aria-expanded","false");menuBtn.setAttribute("aria-label","Open menu");menuBtn.classList.remove("is-open");}}));
   const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(header&&!reduceMotion){let ticking=false;const sync=()=>{header.classList.toggle("is-scrolled",window.scrollY>18);ticking=false;};window.addEventListener("scroll",()=>{if(!ticking){requestAnimationFrame(sync);ticking=true;}},{passive:true});sync();}
-  const triviaStage=q(".project-image-trivia");
-  if(triviaStage&&!triviaStage.querySelector(".trivia-product-shot")){const img=document.createElement("img");img.className="trivia-product-shot";img.alt="Trivia mobile quiz and leaderboard interface";img.decoding="async";img.loading="lazy";img.draggable=false;img.src="assets/projects/trivia-devices.webp";triviaStage.appendChild(img);}
   const initCarousel=(rootSelector,trackSelector,slideSelector,prevSelector,nextSelector,currentSelector)=>{
     const root=q(rootSelector);if(!root)return;const track=root.querySelector(trackSelector),slides=[...root.querySelectorAll(slideSelector)],prev=root.querySelector(prevSelector),next=root.querySelector(nextSelector),current=root.querySelector(currentSelector);if(!track||!slides.length)return;
     let index=0,resizeFrame=0,busy=false,unlockTimer=0;
