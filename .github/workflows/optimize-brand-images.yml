@@ -33,13 +33,13 @@ jobs:
           const fs = require('fs');
 
           const files = [
-            ['assets/brand/burion-hero-lion.jpg', 'assets/brand/burion-hero-lion.webp', 1600, 'hero']
+            ['assets/brand/burion-hero-lion.jpg', 'assets/brand/burion-hero-lion.webp', 1080, 'hero']
           ];
 
           const responsive = [
-            ['assets/brand/burion-logo-horizontal.webp', 'assets/brand/burion-logo-horizontal-320.webp', 320],
-            ['assets/brand/burion-logo-gold.webp', 'assets/brand/burion-logo-gold-320.webp', 320],
-            ['assets/brand/burion-logo-mark.webp', 'assets/brand/burion-logo-mark-320.webp', 320]
+            ['assets/brand/burion-logo-horizontal.webp', 'assets/brand/burion-logo-horizontal-192.webp', 192],
+            ['assets/brand/burion-logo-gold.webp', 'assets/brand/burion-logo-gold-192.webp', 192],
+            ['assets/brand/burion-logo-mark.webp', 'assets/brand/burion-logo-mark-192.webp', 192]
           ];
 
           (async () => {
