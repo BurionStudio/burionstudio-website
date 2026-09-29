@@ -2,7 +2,7 @@ const MARKDOWN_PAGES = {
   "/": `---
 title: Burion Studio — Independent Software Studio
 description: Independent software studio creating games, applications and digital products from idea to release.
-image: https://burionstudio.com/assets/brand/burion-hero-lion.jpg
+image: https://burionstudio.com/assets/brand/burion-hero-lion-1080.webp
 ---
 
 # Burion Studio
