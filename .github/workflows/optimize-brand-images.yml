@@ -5,6 +5,7 @@ on:
     paths:
       - 'assets/brand/*.png'
       - 'assets/brand/*.jpg'
+      - 'assets/brand/*.PNG'
       - '.github/workflows/optimize-brand-images.yml'
       - 'index.html'
       - 'privacy.html'
@@ -37,15 +38,19 @@ jobs:
           const responsive = [
             ['assets/brand/burion-logo-horizontal.webp', 'assets/brand/burion-logo-horizontal-192.webp', 192],
             ['assets/brand/burion-logo-gold.webp', 'assets/brand/burion-logo-gold-192.webp', 192],
-            ['assets/brand/burion-logo-mark.webp', 'assets/brand/burion-logo-mark-192.webp', 192]
+            ['assets/brand/burion-logo-mark.webp', 'assets/brand/burion-logo-mark-192.webp', 192],
+            ['assets/brand/burion-hero-mobile-master.PNG', 'assets/brand/burion-hero-mobile-480.webp', 480],
+            ['assets/brand/burion-hero-mobile-master.PNG', 'assets/brand/burion-hero-mobile-768.webp', 768],
+            ['assets/brand/burion-hero-mobile-master.PNG', 'assets/brand/burion-hero-mobile-1080.webp', 1080]
           ];
 
           (async () => {
             for (const [src, dst, width] of responsive) {
               if (!fs.existsSync(src)) continue;
+              const isHero = src.endsWith('burion-hero-mobile-master.PNG');
               await sharp(src)
                 .resize({ width, withoutEnlargement: true })
-                .webp({ quality: 70, effort: 6, alphaQuality: 88 })
+                .webp({ quality: isHero ? 86 : 70, effort: 6, alphaQuality: 88 })
                 .toFile(dst);
             }
           })().catch(err => {
@@ -109,4 +114,5 @@ jobs:
           git add assets/brand/*.webp assets/fonts/*.woff2 css/fonts.css
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'chore(perf): optimize responsive images and self-host fonts [skip ci]'
+          git pull --rebase origin "$GITHUB_REF_NAME"
           git push
