@@ -1,0 +1,42 @@
+# Burion Studio
+
+## Overview
+Burion Studio is an independent software studio creating games, applications and digital products from idea to release.
+
+## Studio
+Founded and developed independently by İrfan Aslan BÜRİAN.
+
+## Selected work
+
+### Trivia
+A competitive quiz experience designed around knowledge, speed and progression.
+Status: In development.
+
+### Agricultural Platform
+A digital platform focused on smarter agricultural decisions.
+Status: Concept.
+
+### More products are coming
+New games and digital products are taking shape behind the scenes.
+Status: Coming soon.
+
+## What we build
+
+### Games
+Interactive worlds, gameplay systems and experiences built from the ground up.
+
+### Applications
+Useful digital products designed around real problems and real people.
+
+### Digital Products
+Websites, platforms and experiences when ideas need a place to live.
+
+## Contact
+Email: support@burionstudio.com
+
+## Legal
+Privacy Policy: https://burionstudio.com/privacy
+Terms of Use: https://burionstudio.com/terms
+
+## Machine-readable guidance
+This file is a concise description of the public content and capabilities of the site for AI agents and other automated consumers.
