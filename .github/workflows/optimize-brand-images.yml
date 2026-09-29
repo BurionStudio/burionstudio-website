@@ -62,7 +62,7 @@ jobs:
               if (!fs.existsSync(src)) continue;
               await sharp(src)
                 .resize({ width, withoutEnlargement: true })
-                .webp({ quality: 78, effort: 6, alphaQuality: 90 })
+                .webp({ quality: 70, effort: 6, alphaQuality: 88 })
                 .toFile(dst);
             }
           })().catch(err => {
