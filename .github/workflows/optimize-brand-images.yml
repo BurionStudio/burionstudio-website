@@ -6,6 +6,7 @@ on:
       - 'assets/brand/*.png'
       - 'assets/brand/*.jpg'
       - '.github/workflows/optimize-brand-images.yml'
+      - 'index.html'
   workflow_dispatch:
 
 permissions:
@@ -21,40 +22,66 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-save sharp
-      - name: Generate modern image formats
+
+      - name: Generate optimized WebP assets
         run: |
           node <<'NODE'
           const sharp = require('sharp');
           const fs = require('fs');
+
           const files = [
-            ['assets/brand/burion-hero-lion.jpg','assets/brand/burion-hero-lion.webp','jpg'],
-            ['assets/brand/burion-logo-horizontal.png','assets/brand/burion-logo-horizontal.webp','png'],
-            ['assets/brand/burion-logo-gold.png','assets/brand/burion-logo-gold.webp','png'],
-            ['assets/brand/burion-logo-mark.png','assets/brand/burion-logo-mark.webp','png']
+            ['assets/brand/burion-hero-lion.jpg', 'assets/brand/burion-hero-lion.webp', 'hero'],
+            ['assets/brand/burion-logo-horizontal.png', 'assets/brand/burion-logo-horizontal.webp', 'logo'],
+            ['assets/brand/burion-logo-gold.png', 'assets/brand/burion-logo-gold.webp', 'logo'],
+            ['assets/brand/burion-logo-mark.png', 'assets/brand/burion-logo-mark.webp', 'logo']
           ];
-          (async()=>{
-            for (const [src,dst,type] of files) {
+
+          (async () => {
+            for (const [src, dst, kind] of files) {
               if (!fs.existsSync(src)) continue;
+
               const image = sharp(src);
-              if (type === 'jpg') await image.webp({quality:82, effort:5}).toFile(dst);
-              else await image.webp({quality:82, effort:5, alphaQuality:85}).toFile(dst);
+              if (kind === 'hero') {
+                await image.webp({ quality: 80, effort: 6 }).toFile(dst);
+              } else {
+                await image.webp({ quality: 78, effort: 6, alphaQuality: 90 }).toFile(dst);
+              }
             }
-          })().catch(err=>{console.error(err);process.exit(1)});
+          })().catch(err => {
+            console.error(err);
+            process.exit(1);
+          });
           NODE
-      - name: Switch homepage to WebP with fallbacks
+
+      - name: Use WebP assets with original fallbacks
         run: |
           python - <<'PY'
           from pathlib import Path
-          p=Path('index.html')
-          s=p.read_text()
-          s=s.replace('<img src="assets/brand/burion-hero-lion.jpg" alt="Burion Studio lion" class="hero-image"', '<picture><source srcset="assets/brand/burion-hero-lion.webp" type="image/webp"><img src="assets/brand/burion-hero-lion.jpg" alt="Burion Studio lion" class="hero-image"')
-          s=s.replace('decoding="async"><div class="hero-image-overlay">', 'decoding="async"></picture><div class="hero-image-overlay">', 1)
-          s=s.replace('src="assets/brand/burion-logo-horizontal.png"', 'src="assets/brand/burion-logo-horizontal.webp"')
-          s=s.replace('src="assets/brand/burion-logo-gold.png"', 'src="assets/brand/burion-logo-gold.webp"')
-          s=s.replace('src="assets/brand/burion-logo-mark.png"', 'src="assets/brand/burion-logo-mark.webp"')
-          s=s.replace('href="assets/brand/burion-hero-lion.jpg" type="image/jpeg"', 'href="assets/brand/burion-hero-lion.webp" type="image/webp"')
+
+          p = Path('index.html')
+          s = p.read_text()
+
+          hero_old = 'src="assets/brand/burion-hero-lion.jpg" alt="Burion Studio lion"'
+          hero_new = '<picture><source srcset="assets/brand/burion-hero-lion.webp" type="image/webp"><img src="assets/brand/burion-hero-lion.jpg" alt="Burion Studio lion"'
+          if hero_old in s and '<picture><source srcset="assets/brand/burion-hero-lion.webp"' not in s:
+              s = s.replace(hero_old, hero_new, 1)
+              s = s.replace('fetchpriority="high" decoding="async"><div class="hero-image-overlay">', 'fetchpriority="high" decoding="async"></picture><div class="hero-image-overlay">', 1)
+
+          s = s.replace(
+              'href="assets/brand/burion-hero-lion.jpg" type="image/jpeg"',
+              'href="assets/brand/burion-hero-lion.webp" type="image/webp"',
+              1
+          )
+
+          for name in ['burion-logo-horizontal', 'burion-logo-gold', 'burion-logo-mark']:
+              s = s.replace(
+                  f'src="assets/brand/{name}.png"',
+                  f'src="assets/brand/{name}.webp"'
+              )
+
           p.write_text(s)
           PY
+
       - name: Commit optimized assets
         run: |
           git config user.name 'github-actions[bot]'
