@@ -1,0 +1,65 @@
+name: Optimize brand images
+
+on:
+  push:
+    paths:
+      - 'assets/brand/*.png'
+      - 'assets/brand/*.jpg'
+      - '.github/workflows/optimize-brand-images.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.event.head_commit.message, 'chore(images): optimize brand assets') }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save sharp
+      - name: Generate modern image formats
+        run: |
+          node <<'NODE'
+          const sharp = require('sharp');
+          const fs = require('fs');
+          const files = [
+            ['assets/brand/burion-hero-lion.jpg','assets/brand/burion-hero-lion.webp','jpg'],
+            ['assets/brand/burion-logo-horizontal.png','assets/brand/burion-logo-horizontal.webp','png'],
+            ['assets/brand/burion-logo-gold.png','assets/brand/burion-logo-gold.webp','png'],
+            ['assets/brand/burion-logo-mark.png','assets/brand/burion-logo-mark.webp','png']
+          ];
+          (async()=>{
+            for (const [src,dst,type] of files) {
+              if (!fs.existsSync(src)) continue;
+              const image = sharp(src);
+              if (type === 'jpg') await image.webp({quality:82, effort:5}).toFile(dst);
+              else await image.webp({quality:82, effort:5, alphaQuality:85}).toFile(dst);
+            }
+          })().catch(err=>{console.error(err);process.exit(1)});
+          NODE
+      - name: Switch homepage to WebP with fallbacks
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          s=s.replace('<img src="assets/brand/burion-hero-lion.jpg" alt="Burion Studio lion" class="hero-image"', '<picture><source srcset="assets/brand/burion-hero-lion.webp" type="image/webp"><img src="assets/brand/burion-hero-lion.jpg" alt="Burion Studio lion" class="hero-image"')
+          s=s.replace('decoding="async"><div class="hero-image-overlay">', 'decoding="async"></picture><div class="hero-image-overlay">', 1)
+          s=s.replace('src="assets/brand/burion-logo-horizontal.png"', 'src="assets/brand/burion-logo-horizontal.webp"')
+          s=s.replace('src="assets/brand/burion-logo-gold.png"', 'src="assets/brand/burion-logo-gold.webp"')
+          s=s.replace('src="assets/brand/burion-logo-mark.png"', 'src="assets/brand/burion-logo-mark.webp"')
+          s=s.replace('href="assets/brand/burion-hero-lion.jpg" type="image/jpeg"', 'href="assets/brand/burion-hero-lion.webp" type="image/webp"')
+          p.write_text(s)
+          PY
+      - name: Commit optimized assets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/brand/*.webp index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore(images): optimize brand assets [skip ci]'
+          git push
