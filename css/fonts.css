@@ -5,7 +5,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(../assets/fonts/dm-sans-400.woff2) format('truetype');
+  src: url(../assets/fonts/dm-sans-400.woff2) format('woff2');
 }
 
 @font-face {
@@ -13,7 +13,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url(../assets/fonts/dm-sans-600.woff2) format('truetype');
+  src: url(../assets/fonts/dm-sans-600.woff2) format('woff2');
 }
 
 @font-face {
@@ -21,7 +21,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url(../assets/fonts/dm-sans-700.woff2) format('truetype');
+  src: url(../assets/fonts/dm-sans-700.woff2) format('woff2');
 }
 
 @font-face {
@@ -29,6 +29,6 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url(../assets/fonts/playfair-display-600.woff2) format('truetype');
+  src: url(../assets/fonts/playfair-display-600.woff2) format('woff2');
 }
 
