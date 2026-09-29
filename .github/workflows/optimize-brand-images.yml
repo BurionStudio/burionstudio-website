@@ -7,6 +7,8 @@ on:
       - 'assets/brand/*.jpg'
       - '.github/workflows/optimize-brand-images.yml'
       - 'index.html'
+      - 'privacy.html'
+      - 'terms.html'
   workflow_dispatch:
 
 permissions:
@@ -17,9 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+
       - run: npm install --no-save sharp
 
       - name: Generate optimized WebP assets
@@ -29,22 +33,36 @@ jobs:
           const fs = require('fs');
 
           const files = [
-            ['assets/brand/burion-hero-lion.jpg', 'assets/brand/burion-hero-lion.webp', 'hero'],
-            ['assets/brand/burion-logo-horizontal.png', 'assets/brand/burion-logo-horizontal.webp', 'logo'],
-            ['assets/brand/burion-logo-gold.png', 'assets/brand/burion-logo-gold.webp', 'logo'],
-            ['assets/brand/burion-logo-mark.png', 'assets/brand/burion-logo-mark.webp', 'logo']
+            ['assets/brand/burion-hero-lion.jpg', 'assets/brand/burion-hero-lion.webp', 1600, 'hero'],
+            ['assets/brand/burion-logo-horizontal.png', 'assets/brand/burion-logo-horizontal.webp', null, 'logo'],
+            ['assets/brand/burion-logo-gold.png', 'assets/brand/burion-logo-gold.webp', null, 'logo'],
+            ['assets/brand/burion-logo-mark.png', 'assets/brand/burion-logo-mark.webp', null, 'logo']
+          ];
+
+          const responsive = [
+            ['assets/brand/burion-logo-horizontal.png', 'assets/brand/burion-logo-horizontal-320.webp', 320],
+            ['assets/brand/burion-logo-gold.png', 'assets/brand/burion-logo-gold-320.webp', 320],
+            ['assets/brand/burion-logo-mark.png', 'assets/brand/burion-logo-mark-320.webp', 320]
           ];
 
           (async () => {
-            for (const [src, dst, kind] of files) {
+            for (const [src, dst, width, kind] of files) {
               if (!fs.existsSync(src)) continue;
-
               const image = sharp(src);
+              const pipeline = width ? image.resize({ width, withoutEnlargement: true }) : image;
               if (kind === 'hero') {
-                await image.webp({ quality: 80, effort: 6 }).toFile(dst);
+                await pipeline.webp({ quality: 80, effort: 6 }).toFile(dst);
               } else {
-                await image.webp({ quality: 78, effort: 6, alphaQuality: 90 }).toFile(dst);
+                await pipeline.webp({ quality: 78, effort: 6, alphaQuality: 90 }).toFile(dst);
               }
+            }
+
+            for (const [src, dst, width] of responsive) {
+              if (!fs.existsSync(src)) continue;
+              await sharp(src)
+                .resize({ width, withoutEnlargement: true })
+                .webp({ quality: 78, effort: 6, alphaQuality: 90 })
+                .toFile(dst);
             }
           })().catch(err => {
             console.error(err);
@@ -52,40 +70,59 @@ jobs:
           });
           NODE
 
-      - name: Use WebP assets with original fallbacks
+      - name: Download and self-host web fonts
         run: |
           python - <<'PY'
           from pathlib import Path
+          from urllib.request import Request, urlopen
+          import re
 
-          p = Path('index.html')
-          s = p.read_text()
-
-          hero_old = 'src="assets/brand/burion-hero-lion.jpg" alt="Burion Studio lion"'
-          hero_new = '<picture><source srcset="assets/brand/burion-hero-lion.webp" type="image/webp"><img src="assets/brand/burion-hero-lion.jpg" alt="Burion Studio lion"'
-          if hero_old in s and '<picture><source srcset="assets/brand/burion-hero-lion.webp"' not in s:
-              s = s.replace(hero_old, hero_new, 1)
-              s = s.replace('fetchpriority="high" decoding="async"><div class="hero-image-overlay">', 'fetchpriority="high" decoding="async"></picture><div class="hero-image-overlay">', 1)
-
-          s = s.replace(
-              'href="assets/brand/burion-hero-lion.jpg" type="image/jpeg"',
-              'href="assets/brand/burion-hero-lion.webp" type="image/webp"',
-              1
+          css_url = (
+              'https://fonts.googleapis.com/css2?'
+              'family=DM+Sans:wght@400;500;600;700&'
+              'family=Playfair+Display:wght@600;700&'
+              'display=swap&subset=latin'
           )
 
-          for name in ['burion-logo-horizontal', 'burion-logo-gold', 'burion-logo-mark']:
-              s = s.replace(
-                  f'src="assets/brand/{name}.png"',
-                  f'src="assets/brand/{name}.webp"'
-              )
+          req = Request(css_url, headers={'User-Agent': 'Mozilla/5.0'})
+          css = urlopen(req, timeout=30).read().decode('utf-8')
 
-          p.write_text(s)
+          out_dir = Path('assets/fonts')
+          out_dir.mkdir(parents=True, exist_ok=True)
+
+          blocks = re.findall(r'@font-face\s*\{.*?\}', css, flags=re.S)
+          output = []
+
+          for block in blocks:
+              family = re.search(r'font-family:\s*["\']([^"\']+)', block).group(1)
+              weight = re.search(r'font-weight:\s*(\d+)', block).group(1)
+              match = re.search(r'url\((https://[^)]+)\)', block)
+              if not match:
+                  continue
+
+              family_slug = family.lower().replace(' ', '-')
+              filename = f'{family_slug}-{weight}.woff2'
+              target = out_dir / filename
+
+              font_req = Request(match.group(1), headers={'User-Agent': 'Mozilla/5.0'})
+              target.write_bytes(urlopen(font_req, timeout=30).read())
+
+              block = block.replace(match.group(1), f'../assets/fonts/{filename}')
+              output.append(block)
+
+          Path('css/fonts.css').write_text(
+              '/* Self-hosted web fonts generated from the Google Fonts CSS API. */\n\n'
+              + '\n\n'.join(output)
+              + '\n',
+              encoding='utf-8'
+          )
           PY
 
       - name: Commit optimized assets
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/brand/*.webp index.html
+          git add assets/brand/*.webp assets/fonts/*.woff2 css/fonts.css
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'chore(images): optimize brand assets [skip ci]'
+          git commit -m 'chore(perf): optimize responsive images and self-host fonts [skip ci]'
           git push
