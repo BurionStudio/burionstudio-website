@@ -40,3 +40,8 @@ Terms of Use: https://burionstudio.com/terms
 
 ## Machine-readable guidance
 This file is a concise description of the public content and capabilities of the site for AI agents and other automated consumers.
+
+## Links
+- [Burion Studio](https://burionstudio.com/)
+- [Privacy Policy](https://burionstudio.com/privacy)
+- [Terms of Use](https://burionstudio.com/terms)
