@@ -97,8 +97,7 @@
   
   .project-featured .project-info{grid-template-columns:minmax(0,1fr) auto;padding:16px 18px 17px;gap:12px}
   .project-featured .project-info h3{font-size:18px!important}
-  .project-featured .project-info p{font-size:10px!important}
-}
+  .project-featured .project-info p{font-size:10px!important}}
 @media (max-width:430px){
   .project-featured .project-image-trivia .project-image-content{max-width:54%;padding:22px 16px 20px}
   .project-featured .project-image-trivia .project-image-content span{font-size:6.5px;margin-bottom:11px}
@@ -197,8 +196,7 @@
   letter-spacing:-.055em !important;
 }
 .project-featured .project-image-trivia .project-image-content strong::after{
-  content:"" !important;
-  display:block !important;
+  content:"" !important;  display:block !important;
   width:62px !important;
   height:1px !important;
   margin-top:21px !important;
@@ -297,8 +295,7 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:0}
     inset:0;
     z-index:1;
     display:block;
-    width:100%;
-    min-height:100%;
+    width:100%;    min-height:100%;
     padding:0;
     pointer-events:none;
   }
@@ -377,4 +374,19 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:0}
         rgba(7,8,9,.10) 100%
       );
   }
+}
+/* DESKTOP CINEMATIC HERO — reference composition */
+@media (min-width:801px){
+  .redesign-hero{position:relative;display:block;min-height:650px;overflow:hidden;isolation:isolate;border-bottom:1px solid var(--line-soft)}
+  .redesign-hero .hero-content{position:relative;z-index:3;display:flex;width:58%;max-width:650px;min-height:650px;justify-content:center;padding:82px 0}
+  .redesign-hero .hero-visual{position:absolute;inset:0;z-index:1;display:block;width:100%;min-height:100%;padding:0;pointer-events:none}
+  .redesign-hero .hero-visual::before{display:none}
+  .redesign-hero .hero-image-frame{position:absolute;inset:0;z-index:1;width:100%;height:100%;max-width:none;margin:0;aspect-ratio:auto;overflow:hidden;border:0;border-radius:0;background:#070809;box-shadow:none}
+  .redesign-hero .hero-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center right;transform:none;filter:brightness(.82) saturate(.94) contrast(1.04);opacity:1}
+  .redesign-hero .hero-image-overlay{inset:0;background:linear-gradient(90deg,rgba(7,8,9,.97) 0%,rgba(7,8,9,.92) 15%,rgba(7,8,9,.72) 31%,rgba(7,8,9,.42) 48%,rgba(7,8,9,.15) 67%,rgba(7,8,9,.04) 84%,rgba(7,8,9,.02) 100%),linear-gradient(180deg,rgba(7,8,9,.16) 0%,rgba(7,8,9,0) 35%,rgba(7,8,9,.24) 100%)}
+  .redesign-hero .hero-image-brand{display:none}
+}
+@media (min-width:801px) and (max-width:1000px){
+  .redesign-hero .hero-content{width:62%;max-width:610px;padding-right:25px}
+  .redesign-hero .hero-image{object-position:60% center}
 }
