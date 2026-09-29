@@ -1,4 +1,4 @@
-(()=>{const s=document.getElementById("site-stylesheet");if(s)s.media="all";})();
+const s=document.getElementById("site-stylesheet");if(s)s.media="all";
 document.addEventListener("DOMContentLoaded",()=>{
   const q=s=>document.querySelector(s), menu=q("#mobileMenu"), menuBtn=q(".menu-button");
   if(menuBtn&&menu){menuBtn.addEventListener("click",()=>{const open=menuBtn.getAttribute("aria-expanded")==="true";menuBtn.setAttribute("aria-expanded",String(!open));menuBtn.setAttribute("aria-label",!open?"Close menu":"Open menu");menuBtn.classList.toggle("is-open",!open);menu.hidden=open;});}
