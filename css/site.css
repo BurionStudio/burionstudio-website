@@ -259,7 +259,7 @@ img{height:auto}
 button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:0}
 @media(max-width:800px){.site-shell{width:100%;max-width:100%}.project-image-content strong,.build-slide h3,.about-content h2,.contact-heading h2{overflow-wrap:normal;word-break:normal}.footer-nav{max-width:100%;flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.button,.project-card,.build-slide,.build-arrow,.projects-arrow,.footer-social,.contact-email span,.contact-email::after{transition:none!important}}
-.skip-link{position:fixed;top:10px;left:10px;z-index:1000;transform:translateY(-160%);padding:10px 14px;border:1px solid rgba(215,169,87,.45);border-radius:8px;background:#070809;color:var(--text);font-size:12px;font-weight:600;text-decoration:none;transition:transform .2s ease}.skip-link:focus{transform:translateY(0)}
+.skip-link:focus-visible{transform:translateY(0);outline:2px solid var(--gold-light);outline-offset:3px}a:focus-visible,button:focus-visible{outline:2px solid var(--gold-light);outline-offset:3px}.skip-link{position:fixed;top:10px;left:10px;z-index:1000;transform:translateY(-160%);padding:10px 14px;border:1px solid rgba(215,169,87,.45);border-radius:8px;background:#070809;color:var(--text);font-size:12px;font-weight:600;text-decoration:none;transition:transform .2s ease}.skip-link:focus{transform:translateY(0)}
 #main-content{scroll-margin-top:96px}
 .menu-button{width:44px;height:44px}
 .projects-arrow,.build-arrow{width:44px!important;height:44px!important}
