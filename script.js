@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded",()=>{
   const q=s=>document.querySelector(s), menu=q("#mobileMenu"), menuBtn=q(".menu-button");
-  if(menuBtn&&menu){menuBtn.addEventListener("click",()=>{const open=menuBtn.getAttribute("aria-expanded")==="true";menuBtn.setAttribute("aria-expanded",String(!open));menuBtn.setAttribute("aria-label",!open?"Close menu":"Open menu");menuBtn.classList.toggle("is-open",!open);menu.hidden=open;});}
+  if(menuBtn&&menu){menuBtn.addEventListener("click",()=>{const open=menuBtn.getAttribute("aria-expanded")==="true";menuBtn.setAttribute("aria-expanded",String(!open));menuBtn.setAttribute("aria-label",!open?"Close menu":"Open menu");menuBtn.classList.toggle("is-open",!open);menu.hidden=open;if(!open)menu.querySelector("a")?.focus();});document.addEventListener("keydown",e=>{if(e.key==="Escape"&&menuBtn.getAttribute("aria-expanded")==="true"){menu.hidden=true;menuBtn.setAttribute("aria-expanded","false");menuBtn.setAttribute("aria-label","Open menu");menuBtn.classList.remove("is-open");menuBtn.focus();}});}
   document.querySelectorAll(".mobile-nav a,.desktop-nav a,.footer-nav a").forEach(a=>a.addEventListener("click",()=>{if(menu&&menuBtn){menu.hidden=true;menuBtn.setAttribute("aria-expanded","false");menuBtn.setAttribute("aria-label","Open menu");menuBtn.classList.remove("is-open");}}));
   const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const initCarousel=(rootSelector,trackSelector,slideSelector,prevSelector,nextSelector,currentSelector)=>{
