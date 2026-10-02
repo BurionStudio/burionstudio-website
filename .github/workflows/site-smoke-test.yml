@@ -59,6 +59,11 @@ jobs:
                   path = parsed.path.lstrip("/")
                   if not path:
                       continue
+                  # Pretty routes are handled by the Worker, while asset
+                  # references may contain query strings for cache busting.
+                  worker_routes = {"/", "/privacy", "/terms"}
+                  if path in worker_routes:
+                      continue
                   target = root / path
                   if not target.exists():
                       errors.append(f"{html_file}: missing local reference {ref}")
@@ -70,7 +75,12 @@ jobs:
                   parsed = urlparse(ref)
                   if parsed.scheme or ref.startswith("#"):
                       continue
-                  target = root / ref.lstrip("/")
+                  # Strip query strings/fragments before checking the
+                  # local filesystem path (e.g. css/site.css?v=...).
+                  asset_path = parsed.path.lstrip("/")
+                  if asset_path in {"privacy", "terms"}:
+                      continue
+                  target = root / asset_path
                   if not target.exists():
                       errors.append(f"index.html: missing asset {ref}")
 
@@ -92,6 +102,8 @@ jobs:
               print("Smoke test failures:")
               print("\n".join(errors))
               sys.exit(1)
+
+                    node --check worker.js
 
           print("Site smoke tests passed.")
           PY
