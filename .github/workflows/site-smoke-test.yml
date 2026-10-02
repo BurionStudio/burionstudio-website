@@ -103,7 +103,6 @@ jobs:
               print("\n".join(errors))
               sys.exit(1)
 
-                    node --check worker.js
-
           print("Site smoke tests passed.")
           PY
+          node --check worker.js
