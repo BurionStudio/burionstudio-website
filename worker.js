@@ -174,6 +174,21 @@ function wantsMarkdown(request) {
 
 function withMarkdownHeaders(source, markdown) {
   const headers = new Headers(source.headers);
+
+  // _headers applies to static asset responses, not responses created by
+  // this Worker. Keep the same security policy on the Markdown variant.
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()");
+  headers.set("X-Frame-Options", "DENY");
+  headers.set(
+    "Content-Security-Policy",
+    "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data: blob:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; form-action 'self' mailto:; upgrade-insecure-requests"
+  );
+  headers.set(
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload"
+  );
   headers.set("Content-Type", "text/markdown; charset=utf-8");
   headers.set("Vary", "Accept");
   headers.set("Content-Signal", "ai-train=no, search=yes, ai-input=yes");
