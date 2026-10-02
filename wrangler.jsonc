@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "cool-wind-2ec9",
+  "name": "burionstudio-web",
   "main": "worker.js",
   "compatibility_date": "2026-08-30",
   "assets": {
