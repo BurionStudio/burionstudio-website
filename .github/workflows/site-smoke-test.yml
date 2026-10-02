@@ -61,7 +61,7 @@ jobs:
                       continue
                   # Pretty routes are handled by the Worker, while asset
                   # references may contain query strings for cache busting.
-                  worker_routes = {"/", "/privacy", "/terms"}
+                  worker_routes = {"", "privacy", "terms"}
                   if path in worker_routes:
                       continue
                   target = root / path
