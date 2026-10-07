@@ -206,6 +206,21 @@ function withMarkdownHeaders(source, markdown) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    const redirects = {
+      "/tr": "/",
+      "/tr/": "/",
+      "/ru": "/",
+      "/ru/": "/",
+      "/privacy.html": "/privacy",
+      "/terms.html": "/terms"
+    };
+
+    const redirectTarget = redirects[url.pathname];
+    if (redirectTarget) {
+      return Response.redirect(new URL(redirectTarget, url).toString(), 301);
+    }
+
     const key = url.pathname === "/" ? "/" : url.pathname.replace(/\/$/, "");
 
     if (wantsMarkdown(request) && MARKDOWN_PAGES[key]) {
