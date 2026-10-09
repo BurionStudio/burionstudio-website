@@ -210,8 +210,6 @@ export default {
     const redirects = {
       "/tr": "/",
       "/tr/": "/",
-      "/ru": "/",
-      "/ru/": "/",
       "/privacy.html": "/privacy",
       "/terms.html": "/terms"
     };
