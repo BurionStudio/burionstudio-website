@@ -208,8 +208,6 @@ export default {
     const url = new URL(request.url);
 
     const redirects = {
-      "/tr": "/",
-      "/tr/": "/",
       "/privacy.html": "/privacy",
       "/terms.html": "/terms"
     };
