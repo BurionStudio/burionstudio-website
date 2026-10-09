@@ -8,10 +8,22 @@
     "binding": "ASSETS",
     "run_worker_first": [
       "/",
+      "/tr",
+      "/tr/",
+      "/ru",
+      "/ru/",
       "/privacy",
       "/terms",
       "/privacy.html",
-      "/terms.html"
+      "/terms.html",
+      "/studio",
+      "/studio/",
+      "/services",
+      "/services/",
+      "/projects/trivia",
+      "/projects/trivia/",
+      "/projects/agricultural-platform",
+      "/projects/agricultural-platform/"
     ]
   }
 }
