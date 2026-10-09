@@ -8,8 +8,6 @@
     "binding": "ASSETS",
     "run_worker_first": [
       "/",
-      "/tr",
-      "/tr/",
       "/privacy",
       "/terms",
       "/privacy.html",
