@@ -221,6 +221,30 @@ export default {
       return Response.redirect(new URL(redirectTarget, url).toString(), 301);
     }
 
+    // Resolve extensionless content pages explicitly to HTML files.
+    // This avoids serving directory indexes as downloadable/unknown files
+    // when the Worker is run first for these routes.
+    const htmlRoutes = {
+      "/studio": "/studio/index.html",
+      "/studio/": "/studio/index.html",
+      "/services": "/services/index.html",
+      "/services/": "/services/index.html",
+      "/projects/trivia": "/projects/trivia/index.html",
+      "/projects/trivia/": "/projects/trivia/index.html",
+      "/projects/agricultural-platform": "/projects/agricultural-platform/index.html",
+      "/projects/agricultural-platform/": "/projects/agricultural-platform/index.html"
+    };
+
+    const htmlTarget = htmlRoutes[url.pathname];
+    if (htmlTarget) {
+      const assetUrl = new URL(htmlTarget, url);
+      const assetRequest = new Request(assetUrl.toString(), request);
+      const response = await env.ASSETS.fetch(assetRequest);
+      const headers = new Headers(response.headers);
+      headers.set("Content-Type", "text/html; charset=utf-8");
+      return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+    }
+
     const key = url.pathname === "/" ? "/" : url.pathname.replace(/\/$/, "");
 
     if (wantsMarkdown(request) && MARKDOWN_PAGES[key]) {
