@@ -90,6 +90,8 @@ jobs:
               urls = [e.text for e in tree.findall("sm:url/sm:loc", ns)]
               expected = {
                   "https://burionstudio.com/",
+                  "https://burionstudio.com/about",
+                  "https://burionstudio.com/contact",
                   "https://burionstudio.com/privacy",
                   "https://burionstudio.com/terms",
               }
