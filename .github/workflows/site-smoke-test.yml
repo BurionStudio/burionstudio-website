@@ -25,8 +25,8 @@ jobs:
 
           root = Path(".")
           required = [
-              "index.html", "privacy.html", "terms.html", "404.html",
-              "robots.txt", "sitemap.xml", "_headers", "_redirects",
+              "index.html", "about.html", "contact.html", "privacy.html", "terms.html", "404.html",
+              "robots.txt", "sitemap.xml", "llms.txt", "_headers", "_redirects",
               "script.js", "worker.js", "css/site.css", "css/fonts.css",
               "css/legal.css",
           ]
@@ -61,7 +61,7 @@ jobs:
                       continue
                   # Pretty routes are handled by the Worker, while asset
                   # references may contain query strings for cache busting.
-                  worker_routes = {"", "privacy", "terms"}
+                  worker_routes = {"", "about", "contact", "privacy", "terms"}
                   if path in worker_routes:
                       continue
                   target = root / path
@@ -78,7 +78,7 @@ jobs:
                   # Strip query strings/fragments before checking the
                   # local filesystem path (e.g. css/site.css?v=...).
                   asset_path = parsed.path.lstrip("/")
-                  if asset_path in {"privacy", "terms"}:
+                  if asset_path in {"about", "contact", "privacy", "terms"}:
                       continue
                   target = root / asset_path
                   if not target.exists():
