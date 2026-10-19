@@ -77,6 +77,7 @@ test("llms.txt gives concrete agent use cases and honest invocation guidance", a
 
   assert.match(llms, /## When to use this site/);
   assert.match(llms, /## How agents should use the site/);
+  assert.match(llms, /GET https:\/\/burionstudio\.com\/\?mode=agent/);
   assert.match(llms, /There is no published public API or agent-call endpoint/);
   assert.match(llms, /support@burionstudio\.com/);
   assert.match(llms, /https:\/\/burionstudio\.com\/about/);
