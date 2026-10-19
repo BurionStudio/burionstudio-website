@@ -273,6 +273,8 @@ export default {
     const url = new URL(request.url);
 
     const redirects = {
+      "/about.html": "/about",
+      "/contact.html": "/contact",
       "/privacy.html": "/privacy",
       "/terms.html": "/terms"
     };
