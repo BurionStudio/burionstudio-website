@@ -108,3 +108,4 @@ jobs:
           print("Site smoke tests passed.")
           PY
           node --check worker.js
+          node --check script.js
