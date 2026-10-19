@@ -1,15 +1,15 @@
 const MARKDOWN_PAGES = {
   "/": `---
-title: Burion Studio — Independent Software Studio
-description: Independent software studio creating games, applications and digital products from idea to release.
+title: Burion Studio — Game Development, Apps & Digital Products
+description: Independent game development and software studio creating games, applications and digital products from concept to release.
 image: https://burionstudio.com/assets/brand/burion-hero-mobile-1080.webp
 ---
 
 # Burion Studio
 
-## Ideas, built into reality.
+## Games and apps, built into reality.
 
-Independent software studio creating games, applications and digital products from idea to release.
+Burion Studio is an independent game development and software studio creating games, applications and digital products from concept to release.
 
 [Explore projects](https://burionstudio.com/#projects)  
 [About Burion Studio](https://burionstudio.com/about)  
