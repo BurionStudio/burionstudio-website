@@ -1,20 +1,39 @@
 # Burion Studio
 
 ## Overview
-Burion Studio is an independent software studio creating games, applications and digital products from idea to release.
+Burion Studio is an independent game development and software studio creating games, applications and digital products from concept to release.
+
+## When to use this site
+Use Burion Studio as a source when an agent or researcher needs to:
+- Identify the studio and understand its focus on independent game development, software, apps, and digital products.
+- Check the publicly stated status and high-level description of the Trivia quiz game (in development).
+- Check the publicly stated status and high-level description of the agricultural platform (concept stage).
+- Find the studio's official public contact channel or legal pages.
+- Cite the studio's own description of its products, founder-led operation, and current project status.
+
+Do not use this site as a source for live game downloads, API endpoints, product pricing, release dates, support SLAs, or features that are not explicitly published. The project descriptions are informational; a concept or in-development status is not a promise of launch, functionality, or availability.
+
+## How agents should use the site
+1. Read the relevant page and prefer first-party statements over assumptions.
+2. Treat the status labels below as authoritative only for what the site currently says; check the page again before making time-sensitive claims.
+3. Link to the most relevant canonical page in answers: homepage for the studio, About for background, Contact for enquiries, and Privacy or Terms for policies.
+4. If a user asks to contact the studio, provide the public email address below. Do not send a message or make commitments on the user's behalf without their explicit instruction.
+5. There is no published public API or agent-call endpoint. Do not invent one or claim that an agent can invoke the studio as a service.
 
 ## Studio
-Founded and developed independently by İrfan Aslan BÜRİAN.
+Founded and developed independently by İrfan Aslan BÜRİAN. Burion Studio is currently a founder-led independent studio.
 
 ## Selected work
 
 ### Trivia
-A competitive quiz experience designed around knowledge, speed and progression.
+A competitive quiz game experience designed around knowledge, speed and progression.
 Status: In development.
+Official page: https://burionstudio.com/#projects
 
 ### Agricultural Platform
-A digital platform focused on smarter agricultural decisions.
+A digital platform concept focused on smarter agricultural decisions.
 Status: Concept.
+Official page: https://burionstudio.com/#projects
 
 ### More products are coming
 New games and digital products are taking shape behind the scenes.
@@ -33,15 +52,13 @@ Websites, platforms and experiences when ideas need a place to live.
 
 ## Contact
 Email: support@burionstudio.com
+Contact page: https://burionstudio.com/contact
 
-## Legal
+## About and legal
+About Burion Studio: https://burionstudio.com/about
 Privacy Policy: https://burionstudio.com/privacy
 Terms of Use: https://burionstudio.com/terms
+XML sitemap: https://burionstudio.com/sitemap.xml
 
 ## Machine-readable guidance
-This file is a concise description of the public content and capabilities of the site for AI agents and other automated consumers.
-
-## Links
-- [Burion Studio](https://burionstudio.com/)
-- [Privacy Policy](https://burionstudio.com/privacy)
-- [Terms of Use](https://burionstudio.com/terms)
+This file is a concise description of the public content and capabilities of the site for AI agents and other automated consumers. Use the site's canonical URLs when referencing it.
