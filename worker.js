@@ -232,6 +232,132 @@ Questions about these terms can be sent to [support@burionstudio.com](mailto:sup
 `
 };
 
+const AGENT_VIEW = {
+  schema_version: "1.0",
+  kind: "agent-mode",
+  site: {
+    name: "Burion Studio",
+    url: "https://burionstudio.com/",
+    description: "Independent game development and software studio creating games, applications and digital products from concept to release.",
+    contact: "mailto:support@burionstudio.com"
+  },
+  purpose: "A machine-readable overview of the studio's public website, published projects, and supported ways to retrieve information.",
+  authentication: {
+    required_for_public_resources: false,
+    methods: [],
+    note: "The website publishes public information and does not expose an authenticated API or account-based service."
+  },
+  api: {
+    available: false,
+    endpoints: [],
+    note: "No public application API, API base URL, API keys, OAuth flow, or agent-call endpoint is currently published. Do not infer or invent one."
+  },
+  endpoints: [
+    {
+      url: "https://burionstudio.com/",
+      methods: ["GET", "HEAD"],
+      purpose: "Studio homepage; add ?mode=agent for this structured JSON view.",
+      representations: ["text/html", "application/json"]
+    },
+    {
+      url: "https://burionstudio.com/llms.txt",
+      methods: ["GET"],
+      purpose: "Agent-oriented overview and usage guidance.",
+      representations: ["text/plain"]
+    },
+    {
+      url: "https://burionstudio.com/sitemap.xml",
+      methods: ["GET"],
+      purpose: "Discover canonical public pages.",
+      representations: ["application/xml"]
+    },
+    {
+      url: "https://burionstudio.com/",
+      methods: ["GET"],
+      purpose: "Request Markdown for mapped public pages by sending Accept: text/markdown.",
+      representations: ["text/markdown"]
+    }
+  ],
+  capabilities: [
+    {
+      id: "public_studio_information",
+      available: true,
+      description: "Read public information about the studio, its focus, and contact channel."
+    },
+    {
+      id: "project_status_information",
+      available: true,
+      description: "Read published high-level project descriptions and their stated development status."
+    },
+    {
+      id: "markdown_content_negotiation",
+      available: true,
+      description: "GET supported mapped pages with Accept: text/markdown to receive Markdown."
+    },
+    {
+      id: "agent_friendly_not_found",
+      available: true,
+      description: "GET an unknown URL with Accept: text/markdown to receive an explanatory Markdown body with HTTP 404."
+    },
+    {
+      id: "remote_actions_or_product_execution",
+      available: false,
+      description: "The site does not provide an agent-call API, remote execution, account actions, or product operations."
+    }
+  ],
+  projects: [
+    {
+      name: "Trivia",
+      type: "game",
+      status: "in_development",
+      description: "A competitive quiz experience designed around knowledge, speed, and progression."
+    },
+    {
+      name: "Agricultural Platform",
+      type: "application",
+      status: "concept",
+      description: "A digital platform concept focused on smarter agricultural decisions."
+    }
+  ],
+  pages: [
+    { url: "https://burionstudio.com/about", purpose: "Studio background" },
+    { url: "https://burionstudio.com/contact", purpose: "Public contact information" },
+    { url: "https://burionstudio.com/privacy", purpose: "Privacy policy" },
+    { url: "https://burionstudio.com/terms", purpose: "Terms of use" },
+    { url: "https://burionstudio.com/llms.txt", purpose: "Agent instructions and site overview" },
+    { url: "https://burionstudio.com/sitemap.xml", purpose: "Canonical URL discovery" }
+  ],
+  agent_guidance: {
+    when_to_use: "Use this site when an answer needs first-party information about Burion Studio, its publicly described projects, current project status, or public contact and policy pages.",
+    limitations: [
+      "Project status can change; re-check the relevant page before making time-sensitive claims.",
+      "Do not claim that concept-stage or in-development projects are released or available.",
+      "No public API or authentication mechanism is offered."
+    ]
+  }
+};
+
+function withAgentJsonHeaders(source) {
+  const headers = new Headers(source.headers);
+  headers.set("Content-Type", "application/json; charset=utf-8");
+  headers.set("Cache-Control", "public, max-age=300");
+  headers.set("Vary", "Accept");
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()");
+  headers.set("X-Frame-Options", "DENY");
+  headers.set(
+    "Content-Security-Policy",
+    "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data: blob:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; form-action 'self' mailto:; upgrade-insecure-requests"
+  );
+  headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+  headers.delete("Content-Length");
+  headers.delete("Content-Encoding");
+  headers.delete("ETag");
+  headers.delete("Last-Modified");
+  return headers;
+}
+
 function wantsMarkdown(request) {
   const accept = request.headers.get("Accept") || "";
   return /(?:^|,|;)\s*text\/markdown(?:\s*[;,]|$)/i.test(accept);
@@ -282,6 +408,21 @@ export default {
     const redirectTarget = redirects[url.pathname];
     if (redirectTarget) {
       return Response.redirect(new URL(redirectTarget, url).toString(), 301);
+    }
+
+    // Explicit machine-readable homepage view. This describes only public,
+    // implemented capabilities and does not imply that a product API exists.
+    if (
+      (request.method === "GET" || request.method === "HEAD") &&
+      url.pathname === "/" &&
+      url.searchParams.get("mode") === "agent"
+    ) {
+      const assetResponse = await env.ASSETS.fetch(new Request(new URL("/", url.origin), { method: "GET" }));
+      const body = request.method === "HEAD" ? null : JSON.stringify(AGENT_VIEW, null, 2);
+      return new Response(body, {
+        status: 200,
+        headers: withAgentJsonHeaders(assetResponse)
+      });
     }
 
     // Only serve Markdown for read requests. Other methods must reach the
