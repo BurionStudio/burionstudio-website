@@ -101,7 +101,8 @@ test("trust pages have canonical URLs and substantial first-party content", asyn
   for (const [filename, canonical, heading] of [
     ["about.html", "https://burionstudio.com/about", "About Burion Studio"],
     ["contact.html", "https://burionstudio.com/contact", "Contact Burion Studio"],
-    ["privacy.html", "https://burionstudio.com/privacy", "Privacy Policy"]
+    ["privacy.html", "https://burionstudio.com/privacy", "Privacy Policy"],
+    ["terms.html", "https://burionstudio.com/terms", "Terms of Use"]
   ]) {
     const html = await readFile(new URL(`../${filename}`, import.meta.url), "utf8");
     assert.match(html, new RegExp(`<link rel="canonical" href="${canonical.replace(/[.*+?^${}()|[\]\\\\]/g, "\\$&")}"`));
