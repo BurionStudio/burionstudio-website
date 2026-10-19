@@ -62,3 +62,13 @@ XML sitemap: https://burionstudio.com/sitemap.xml
 
 ## Machine-readable guidance
 This file is a concise description of the public content and capabilities of the site for AI agents and other automated consumers. Use the site's canonical URLs when referencing it.
+
+## Machine-readable agent view
+
+Request `GET https://burionstudio.com/?mode=agent` to receive a JSON document describing the site's public pages, published project status, supported content retrieval methods, capabilities, and limitations.
+
+- Response type: `application/json; charset=utf-8`
+- Authentication: not required for public information.
+- Public application API: none is currently offered; the JSON view reports this explicitly.
+- Do not infer API endpoints, authentication methods, product execution, or remote actions that are not documented in the response.
+- For Markdown content, request a supported page with `Accept: text/markdown`.
