@@ -82,3 +82,38 @@ test("llms.txt gives concrete agent use cases and honest invocation guidance", a
   assert.match(llms, /https:\/\/burionstudio\.com\/about/);
   assert.match(llms, /https:\/\/burionstudio\.com\/sitemap\.xml/);
 });
+
+test("homepage Organization JSON-LD has a descriptive entity and public contact point", async () => {
+  const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i);
+  assert.ok(match, "JSON-LD script should exist");
+
+  const data = JSON.parse(match[1]);
+  const organization = data["@graph"].find((item) => item["@type"] === "Organization");
+  assert.ok(organization);
+  assert.match(organization.description, /game development and software studio/i);
+  assert.equal(organization.contactPoint.contactType, "customer support");
+  assert.equal(organization.contactPoint.email, "support@burionstudio.com");
+});
+
+test("trust pages have canonical URLs and substantial first-party content", async () => {
+  for (const [filename, canonical, heading] of [
+    ["about.html", "https://burionstudio.com/about", "About Burion Studio"],
+    ["contact.html", "https://burionstudio.com/contact", "Contact Burion Studio"],
+    ["privacy.html", "https://burionstudio.com/privacy", "Privacy Policy"]
+  ]) {
+    const html = await readFile(new URL(`../${filename}`, import.meta.url), "utf8");
+    assert.match(html, new RegExp(`<link rel="canonical" href="${canonical.replace(/[.*+?^${}()|[\]\\\\]/g, "\\$&")}"`));
+    assert.ok(html.length > 500, `${filename} should have at least 500 characters`);
+    assert.ok(html.includes(`<h1>${heading}</h1>`), `${filename} should have the expected heading`);
+  }
+});
+
+test("sitemap lists canonical trust pages and the agent discovery file remains linked", async () => {
+  const sitemap = await readFile(new URL("../sitemap.xml", import.meta.url), "utf8");
+  for (const path of ["/about", "/contact", "/privacy"]) {
+    assert.ok(sitemap.includes(`https://burionstudio.com${path}`), `sitemap should include ${path}`);
+  }
+  const llms = await readFile(new URL("../llms.txt", import.meta.url), "utf8");
+  assert.ok(llms.includes("https://burionstudio.com/sitemap.xml"));
+});
