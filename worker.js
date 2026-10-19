@@ -12,6 +12,9 @@ image: https://burionstudio.com/assets/brand/burion-hero-mobile-1080.webp
 Independent software studio creating games, applications and digital products from idea to release.
 
 [Explore projects](https://burionstudio.com/#projects)  
+[About Burion Studio](https://burionstudio.com/about)  
+[Contact page](https://burionstudio.com/contact)  
+[Privacy Policy](https://burionstudio.com/privacy)  
 [Get in touch](mailto:support@burionstudio.com)
 
 ## Selected Work
