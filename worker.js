@@ -74,6 +74,68 @@ Founder · Developer
 © 2026 Burion Studio.
 `,
 
+  "/about": `---
+title: About Burion Studio — Independent Software Studio
+description: Learn about Burion Studio, an independent software studio building games, applications and digital products.
+---
+
+# About Burion Studio
+
+## Who we are
+
+Burion Studio is an independent software studio founded by İrfan Aslan BÜRİAN. It is being built around a simple idea: turn thoughtful concepts into useful, well-designed digital products. The studio works independently, with a focus on clear user experiences, reliable systems, and products that can grow over time.
+
+## What we build
+
+The studio's areas of interest include games, applications, websites, and other digital products. Work begins with understanding the problem a product should solve, then shaping its experience and functionality through design, development, and iteration.
+
+## Current projects
+
+Trivia is a competitive quiz game in development, designed around knowledge, speed, and progression. An agricultural platform is at the concept stage and explores ways digital tools could support smarter decisions in farming. These descriptions communicate current direction, not a guarantee of launch dates, features, or availability.
+
+## How we work
+
+Burion Studio is currently an independently operated, founder-led studio. The studio aims to communicate clearly about what exists today and what remains a concept, and to build its portfolio gradually rather than overstate its size or capabilities.
+
+## Contact
+
+For general enquiries, email [support@burionstudio.com](mailto:support@burionstudio.com). Read the [Privacy Policy](https://burionstudio.com/privacy).
+
+© 2026 Burion Studio.
+`,
+
+  "/contact": `---
+title: Contact Burion Studio
+description: Contact Burion Studio for general enquiries, project questions, and collaboration ideas by email.
+---
+
+# Contact Burion Studio
+
+## General enquiries
+
+For questions about Burion Studio, its website, current projects, or potential collaborations, please email [support@burionstudio.com](mailto:support@burionstudio.com). This is the studio's public contact address and the only contact channel currently published on this website.
+
+Selecting the email link opens the email application configured on your device. Include a clear subject and enough context to help explain your question or proposal. Please do not include passwords, payment details, or other sensitive information in an initial enquiry.
+
+## Projects and collaboration
+
+Burion Studio develops independent games, applications, and digital products. Enquiries related to project information, feedback, technical questions about the website, or possible collaboration are welcome. Any potential collaboration or project commitment would need to be discussed and confirmed directly by email.
+
+## Response expectations
+
+Messages are reviewed as time and project work allow. A response is not guaranteed within a particular timeframe, and sending an enquiry does not create a business, employment, support, or contractual relationship.
+
+## Business details
+
+Burion Studio is an independently operated software studio. A public telephone number and postal business address are not currently provided. Email is the appropriate way to initiate contact; please do not assume that the studio offers phone support, walk-in visits, or a physical customer service location.
+
+## Privacy
+
+Information you send by email is handled through the email services used by you and the recipient. For details, review the [Privacy Policy](https://burionstudio.com/privacy). To learn more about the studio, visit [About Burion Studio](https://burionstudio.com/about).
+
+© 2026 Burion Studio.
+`,
+
   "/privacy": `---
 title: Privacy Policy — Burion Studio
 description: Privacy Policy for Burion Studio.
