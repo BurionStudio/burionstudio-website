@@ -117,3 +117,45 @@ test("sitemap lists canonical trust pages and the agent discovery file remains l
   const llms = await readFile(new URL("../llms.txt", import.meta.url), "utf8");
   assert.ok(llms.includes("https://burionstudio.com/sitemap.xml"));
 });
+
+test("homepage ?mode=agent returns structured JSON with honest API and authentication details", async () => {
+  const request = new Request("https://burionstudio.com/?mode=agent");
+  const response = await worker.fetch(request, makeEnv(200, "<html>marketing homepage</html>"));
+
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") ?? "", /^application\/json; charset=utf-8$/i);
+  assert.match(response.headers.get("cache-control") ?? "", /max-age=300/);
+
+  const data = await response.json();
+  assert.equal(data.kind, "agent-mode");
+  assert.equal(data.site.url, "https://burionstudio.com/");
+  assert.equal(data.authentication.required_for_public_resources, false);
+  assert.deepEqual(data.api.endpoints, []);
+  assert.equal(data.api.available, false);
+  assert.ok(data.endpoints.some((endpoint) => endpoint.url === "https://burionstudio.com/llms.txt"));
+  assert.ok(data.capabilities.some((capability) => capability.id === "markdown_content_negotiation" && capability.available));
+  assert.ok(data.capabilities.some((capability) => capability.id === "remote_actions_or_product_execution" && !capability.available));
+  assert.ok(data.projects.some((project) => project.name === "Trivia" && project.status === "in_development"));
+});
+
+test("homepage without mode=agent keeps the regular HTML asset response", async () => {
+  const response = await worker.fetch(
+    new Request("https://burionstudio.com/"),
+    makeEnv(200, "<html>marketing homepage</html>")
+  );
+
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") ?? "", /text\/html/i);
+  assert.equal(await response.text(), "<html>marketing homepage</html>");
+});
+
+test("homepage HEAD ?mode=agent returns JSON headers without a response body", async () => {
+  const response = await worker.fetch(
+    new Request("https://burionstudio.com/?mode=agent", { method: "HEAD" }),
+    makeEnv(200)
+  );
+
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") ?? "", /^application\/json; charset=utf-8$/i);
+  assert.equal(await response.text(), "");
+});
