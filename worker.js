@@ -234,6 +234,28 @@ export default {
       });
     }
 
-    return env.ASSETS.fetch(request);
+    const assetResponse = await env.ASSETS.fetch(request);
+
+    // Agent-friendly 404: preserve the real not-found status while returning
+    // a useful Markdown explanation to clients that explicitly request it.
+    if (request.method === "GET" && wantsMarkdown(request) && assetResponse.status === 404) {
+      const markdown = [
+        "# Page not found",
+        "",
+        "The requested page does not exist on Burion Studio.",
+        "",
+        "You can explore the site's public overview and available pages here:",
+        "",
+        "- [Site overview (llms.txt)](https://burionstudio.com/llms.txt)",
+        "- [XML sitemap](https://burionstudio.com/sitemap.xml)"
+      ].join("\n");
+
+      return new Response(markdown, {
+        status: 404,
+        headers: withMarkdownHeaders(assetResponse, markdown)
+      });
+    }
+
+    return assetResponse;
   }
 };
