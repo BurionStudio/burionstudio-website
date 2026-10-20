@@ -8,3 +8,4 @@ README.md
 **/.wrangler
 tests/
 assets/fonts/playfair-display-700.woff2
+DEPLOYMENT.md

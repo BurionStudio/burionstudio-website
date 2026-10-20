@@ -174,3 +174,21 @@ test("security.txt has a contact, canonical URL, and unexpired expiry date", asy
   assert.ok(expiry && Number.isFinite(Date.parse(expiry)), "security.txt should include a valid Expires date");
   assert.ok(Date.parse(expiry) > Date.now(), "security.txt has expired");
 });
+
+test("repository-only documentation and build internals are excluded from public assets", async () => {
+  const ignore = await readFile(path.join(root, ".assetsignore"), "utf8");
+  for (const pattern of [
+    "DEPLOYMENT.md",
+    "README.md",
+    "docs/",
+    "tests/",
+    ".github/",
+    "worker.js",
+    "wrangler.jsonc",
+    ".assetsignore",
+    "**/.git",
+    "**/.wrangler"
+  ]) {
+    assert.ok(ignore.split(/\r?\n/).includes(pattern), `.assetsignore should exclude ${pattern}`);
+  }
+});
