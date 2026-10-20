@@ -44,13 +44,23 @@ jobs:
             agent_status=$(curl -sS --max-time 5 -D /tmp/burion-agent.headers -o /tmp/burion-agent.json -w '%{http_code}' "$base/?mode=agent" 2>/dev/null || true)
             llms_status=$(curl -sS --max-time 5 -o /tmp/burion-llms.txt -w '%{http_code}' "$base/llms.txt" 2>/dev/null || true)
             robots_status=$(curl -sS --max-time 5 -o /tmp/burion-robots.txt -w '%{http_code}' "$base/robots.txt" 2>/dev/null || true)
+            security_status=$(curl -sS --max-time 5 -o /tmp/burion-security.txt -w '%{http_code}' "$base/.well-known/security.txt" 2>/dev/null || true)
+            home_headers_status=$(curl -sS --max-time 5 -D /tmp/burion-home.headers -o /dev/null -w '%{http_code}' "$base/" 2>/dev/null || true)
+            legacy_status=$(curl -sS --max-time 5 -D /tmp/burion-legacy.headers -o /dev/null -w '%{http_code}' "$base/about.html" 2>/dev/null || true)
             deployment_doc_status=$(curl -sS --max-time 5 -o /dev/null -w '%{http_code}' "$base/DEPLOYMENT.md" 2>/dev/null || true)
 
             if [ "$home_status" = "200" ] &&
                [ "$agent_status" = "200" ] &&
                [ "$llms_status" = "200" ] &&
                [ "$robots_status" = "200" ] &&
+               [ "$security_status" = "200" ] &&
+               [ "$home_headers_status" = "200" ] &&
+               [ "$legacy_status" = "301" ] &&
                [ "$deployment_doc_status" = "404" ] &&
+               grep -qi '^strict-transport-security:' /tmp/burion-home.headers &&
+               grep -qi '^content-security-policy:' /tmp/burion-home.headers &&
+               grep -qi '^location: https://burionstudio.com/about' /tmp/burion-legacy.headers &&
+               grep -qi '^Contact: mailto:support@burionstudio.com' /tmp/burion-security.txt &&
                grep -qi '^content-type: application/json' /tmp/burion-agent.headers &&
                grep -q '"kind": "agent-mode"' /tmp/burion-agent.json &&
                grep -q 'There is no published public API' /tmp/burion-llms.txt &&
@@ -60,7 +70,7 @@ jobs:
               exit 0
             fi
 
-            last_state="attempt=$attempt home=$home_status agent=$agent_status llms=$llms_status robots=$robots_status deployment_doc=$deployment_doc_status"
+            last_state="attempt=$attempt home=$home_status agent=$agent_status llms=$llms_status robots=$robots_status security=$security_status headers=$home_headers_status legacy=$legacy_status deployment_doc=$deployment_doc_status"
             echo "Waiting for Cloudflare to serve the expected release: $last_state"
             sleep 5
             attempt=$((attempt + 1))
