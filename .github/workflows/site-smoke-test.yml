@@ -25,3 +25,50 @@ jobs:
         run: |
           node --check worker.js
           node --check script.js
+
+  live-production-smoke:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: smoke-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for and verify the live Cloudflare release
+        shell: bash
+        run: |
+          set -uo pipefail
+          base="https://burionstudio.com"
+          last_state=""
+          attempt=1
+
+          while [ "$attempt" -le 36 ]; do
+            home_status=$(curl -sS --max-time 5 -o /tmp/burion-home.html -w '%{http_code}' "$base/" 2>/dev/null || true)
+            agent_status=$(curl -sS --max-time 5 -D /tmp/burion-agent.headers -o /tmp/burion-agent.json -w '%{http_code}' "$base/?mode=agent" 2>/dev/null || true)
+            llms_status=$(curl -sS --max-time 5 -o /tmp/burion-llms.txt -w '%{http_code}' "$base/llms.txt" 2>/dev/null || true)
+            robots_status=$(curl -sS --max-time 5 -o /tmp/burion-robots.txt -w '%{http_code}' "$base/robots.txt" 2>/dev/null || true)
+            deployment_doc_status=$(curl -sS --max-time 5 -o /dev/null -w '%{http_code}' "$base/DEPLOYMENT.md" 2>/dev/null || true)
+
+            if [ "$home_status" = "200" ] &&
+               [ "$agent_status" = "200" ] &&
+               [ "$llms_status" = "200" ] &&
+               [ "$robots_status" = "200" ] &&
+               [ "$deployment_doc_status" = "404" ] &&
+               grep -qi '^content-type: application/json' /tmp/burion-agent.headers &&
+               grep -q '"kind": "agent-mode"' /tmp/burion-agent.json &&
+               grep -q 'There is no published public API' /tmp/burion-llms.txt &&
+               grep -qi '^User-agent: GPTBot' /tmp/burion-robots.txt &&
+               grep -qi '^User-agent: OAI-SearchBot' /tmp/burion-robots.txt; then
+              echo "Live smoke tests passed: homepage, agent JSON, llms.txt, robots.txt, and internal deployment-doc exclusion."
+              exit 0
+            fi
+
+            last_state="attempt=$attempt home=$home_status agent=$agent_status llms=$llms_status robots=$robots_status deployment_doc=$deployment_doc_status"
+            echo "Waiting for Cloudflare to serve the expected release: $last_state"
+            sleep 5
+            attempt=$((attempt + 1))
+          done
+
+          echo "Live smoke test failed after waiting for the Cloudflare release: $last_state"
+          echo "Agent response headers:"
+          cat /tmp/burion-agent.headers 2>/dev/null || true
+          echo "Robots file:"
+          cat /tmp/burion-robots.txt 2>/dev/null || true
+          exit 1
