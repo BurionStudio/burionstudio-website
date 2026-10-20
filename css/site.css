@@ -398,3 +398,17 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:0}
 .footer-social:hover,.footer-social:focus-visible{color:#f4f1ea!important;border-color:rgba(215,169,87,.7)!important;background:rgba(215,169,87,.08)!important;transform:translateY(-1px)!important}
 .footer-social:focus-visible{outline:2px solid var(--gold-light)!important;outline-offset:3px!important}
 @media(max-width:800px){.footer-social{margin-left:0!important;width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important}.footer-social-icon{width:15px!important;height:15px!important}}
+
+/* Mobile footer: give Instagram its own centered row below the primary links. */
+@media(max-width:800px){
+  .footer-nav .footer-social{
+    flex:0 0 100%!important;
+    align-self:center!important;
+    margin:8px auto 0!important;
+    width:36px!important;
+    height:36px!important;
+    min-width:36px!important;
+    min-height:36px!important;
+  }
+  .footer-nav .footer-social-icon{width:17px!important;height:17px!important}
+}
