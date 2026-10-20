@@ -427,7 +427,7 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:0}
 
 /* Refine mobile footer rhythm without changing desktop layout. */
 @media(max-width:800px){
-  .footer-main{gap:0!important}
-  .footer-nav{margin-top:22px!important}
-  .footer-social-wrap{margin:22px auto 24px!important}
+  .footer-main{gap:0!important;padding-bottom:22px!important}
+  .footer-nav{margin-top:20px!important}
+  .footer-social-wrap{margin:16px auto 14px!important}
 }
