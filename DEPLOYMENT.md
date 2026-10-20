@@ -30,3 +30,7 @@ Do not delete the Worker, its custom domains, or the repository connection to ad
 ## Automatic-trigger check
 
 A low-risk documentation commit can be used to test the GitHub-to-Cloudflare trigger. Verify that Cloudflare records a build for the exact commit and advances the active production version before calling the trigger healthy.
+
+## Reproducible deployment tooling
+
+Cloudflare Workers Builds runs the test/syntax checks before deployment. Production and preview deploy commands are pinned to `wrangler@4.151.2` rather than allowing `npx` to silently select an arbitrary latest release. Review the Wrangler changelog and intentionally update both Cloudflare build settings when upgrading this pin.
