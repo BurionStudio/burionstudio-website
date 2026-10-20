@@ -4,3 +4,6 @@ worker.js
 docs/
 .github/
 README.md
+.git/
+.wrangler/
+tests/
