@@ -22,3 +22,7 @@ Also check that `https://burionstudio.com/` still serves the normal homepage and
 2. Confirm the build/deploy result is successful.
 3. Test the agent-mode URL and the normal homepage after deployment.
 4. Do not treat a GitHub Pages deployment as evidence of a Cloudflare Worker deployment.
+
+## Automatic trigger verification
+
+A change to this file can be used as a low-risk trigger test for the `main` branch. After pushing it, verify that Cloudflare Workers Builds records a new build for the exact commit SHA and that the production deployment advances to that commit. If no build appears, investigate the GitHub-to-Cloudflare repository grant and webhook integration; do not assume that a GitHub Pages workflow updated the Worker.
