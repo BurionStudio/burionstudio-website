@@ -120,6 +120,32 @@ test("sitemap lists canonical trust pages and the agent discovery file remains l
   assert.ok(llms.includes("https://burionstudio.com/sitemap.xml"));
 });
 
+
+test("robots policy separates search access from model-training crawlers", async () => {
+  const robots = await readFile(new URL("../robots.txt", import.meta.url), "utf8");
+
+  assert.match(robots, /^User-agent: Googlebot\s*\nAllow: \/$/mi);
+  assert.match(robots, /^User-agent: Google-Extended\s*\nDisallow: \/$/mi);
+  assert.match(robots, /^User-agent: OAI-SearchBot\s*\nAllow: \/$/mi);
+  assert.match(robots, /^User-agent: GPTBot\s*\nDisallow: \/$/mi);
+  assert.match(robots, /^User-agent: Claude-SearchBot\s*\nAllow: \/$/mi);
+  assert.match(robots, /^User-agent: Claude-User\s*\nAllow: \/$/mi);
+  assert.match(robots, /^User-agent: ClaudeBot\s*\nDisallow: \/$/mi);
+  assert.match(robots, /Content-Signal: ai-train=no, search=yes, ai-input=yes/);
+});
+
+test("font declarations register requested DM Sans weights and exclude unused Playfair 700", async () => {
+  const fonts = await readFile(new URL("../css/fonts.css", import.meta.url), "utf8");
+  const assetsIgnore = await readFile(new URL("../.assetsignore", import.meta.url), "utf8");
+  const weights = [...fonts.matchAll(/font-family:\s*['"]DM Sans['"];[\s\S]*?font-weight:\s*(\d+)/g)].map((match) => Number(match[1]));
+
+  for (const weight of [400, 500, 600, 700]) {
+    assert.ok(weights.includes(weight), `DM Sans weight ${weight} should be registered`);
+  }
+  assert.match(fonts, /font-family:\s*['"]Playfair Display['"];[\s\S]*?font-weight:\s*600/);
+  assert.match(assetsIgnore, /^assets\/fonts\/playfair-display-700\.woff2$/m);
+});
+
 test("homepage ?mode=agent returns structured JSON with honest API and authentication details", async () => {
   const request = new Request("https://burionstudio.com/?mode=agent");
   const response = await worker.fetch(request, makeEnv(200, "<html>marketing homepage</html>"));
@@ -127,6 +153,11 @@ test("homepage ?mode=agent returns structured JSON with honest API and authentic
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^application\/json; charset=utf-8$/i);
   assert.match(response.headers.get("cache-control") ?? "", /max-age=300/);
+  assert.match(response.headers.get("vary") ?? "", /Accept/i);
+  assert.equal(response.headers.get("x-content-type-options"), "nosniff");
+  assert.equal(response.headers.get("x-frame-options"), "DENY");
+  assert.equal(response.headers.get("referrer-policy"), "strict-origin-when-cross-origin");
+  assert.match(response.headers.get("content-security-policy") ?? "", /frame-ancestors 'none'/);
 
   const data = await response.json();
   assert.equal(data.kind, "agent-mode");

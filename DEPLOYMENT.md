@@ -1,28 +1,32 @@
-# Deployment notes
+# Deployment and release verification
 
-## Cloudflare Worker
+## Production target
 
-The `burionstudio-web` Worker is connected to this repository and uses `main` as its production branch. Worker code and GitHub Pages deployments are separate deployment paths; a successful Pages workflow does not prove that the Worker has been updated.
+- GitHub repository: `BurionStudio/burionstudio-website`
+- Production branch: `main`
+- Cloudflare Worker: `burionstudio-web`
+- Canonical host: `https://burionstudio.com/`
+- Agent mode: `https://burionstudio.com/?mode=agent`
 
-## Agent-mode smoke test
-
-After a Worker deployment from the intended `main` commit, request:
-
-```sh
-curl -i 'https://burionstudio.com/?mode=agent'
-```
-
-Expected result: HTTP `200`, `Content-Type: application/json`, and the structured agent-view JSON. A normal homepage HTML response means the agent-mode Worker code is not active for that request and should not be marked as verified.
-
-Also check that `https://burionstudio.com/` still serves the normal homepage and that `https://burionstudio.com/llms.txt` remains available.
+Cloudflare Workers Builds watches `main`. Its build command runs the Worker behavior tests, static-site smoke tests, and JavaScript syntax checks before `npx wrangler deploy`. A failed check should prevent that build from deploying. GitHub Actions runs the checks independently. GitHub Pages is a separate deployment path and its success is not evidence that the production Worker has updated.
 
 ## Release verification
 
-1. Confirm the active Cloudflare production deployment points to the intended commit on `main`.
-2. Confirm the build/deploy result is successful.
-3. Test the agent-mode URL and the normal homepage after deployment.
-4. Do not treat a GitHub Pages deployment as evidence of a Cloudflare Worker deployment.
+For each production change:
 
-## Automatic trigger verification
+1. Confirm the latest GitHub commit on `main` is the intended change.
+2. Confirm Cloudflare Workers Builds has a build for that exact commit SHA and the build outcome is `success`.
+3. Confirm Cloudflare's active production deployment routes 100% of traffic to the newly deployed version.
+4. Check `https://burionstudio.com/` returns the normal homepage.
+5. Check `https://burionstudio.com/?mode=agent` returns HTTP 200 with `Content-Type: application/json` and `kind: "agent-mode"`.
+6. Check `https://burionstudio.com/llms.txt` and `https://burionstudio.com/robots.txt` remain accessible.
 
-A change to this file can be used as a low-risk trigger test for the `main` branch. After pushing it, verify that Cloudflare Workers Builds records a new build for the exact commit SHA and that the production deployment advances to that commit. If no build appears, investigate the GitHub-to-Cloudflare repository grant and webhook integration; do not assume that a GitHub Pages workflow updated the Worker.
+A normal HTML homepage response for `?mode=agent` means the intended Worker code is not active for that request. Do not mark the release as verified based on a GitHub Pages build alone.
+
+## Rollback and safety
+
+Do not delete the Worker, its custom domains, or the repository connection to address an isolated build failure. Investigate the failing build logs first. Change production configuration only when the change has been reviewed and can be verified after deployment.
+
+## Automatic-trigger check
+
+A low-risk documentation commit can be used to test the GitHub-to-Cloudflare trigger. Verify that Cloudflare records a build for the exact commit and advances the active production version before calling the trigger healthy.

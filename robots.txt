@@ -1,17 +1,32 @@
-# Burion Studio — public AI/search crawling
+# Burion Studio — public search and AI retrieval policy
+# Content may be used for search and user-requested retrieval, but not model training.
 User-agent: *
 Content-Signal: ai-train=no, search=yes, ai-input=yes
 Allow: /
 
-# Google Search / Gemini ecosystem
+# Keep Google Search indexing available.
 User-agent: Googlebot
 Allow: /
 
+# Google-Extended controls Gemini/Vertex training and grounding; blocked to honour ai-train=no.
 User-agent: Google-Extended
-Allow: /
+Disallow: /
 
-# ChatGPT Search
+# Keep ChatGPT Search visibility while blocking the training crawler.
 User-agent: OAI-SearchBot
 Allow: /
+
+User-agent: GPTBot
+Disallow: /
+
+# Keep Claude search and user-directed retrieval; block model-training crawl.
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: ClaudeBot
+Disallow: /
 
 Sitemap: https://burionstudio.com/sitemap.xml

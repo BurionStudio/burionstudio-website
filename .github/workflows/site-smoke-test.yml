@@ -13,99 +13,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate site structure and local references
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate HTML, local assets, SEO, and security policy
+        run: node --test tests/site-smoke.test.mjs
+
+      - name: Check JavaScript syntax
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          from html.parser import HTMLParser
-          from urllib.parse import urlparse
-          import re
-          import sys
-          import xml.etree.ElementTree as ET
-
-          root = Path(".")
-          required = [
-              "index.html", "about.html", "contact.html", "privacy.html", "terms.html", "404.html",
-              "robots.txt", "sitemap.xml", "llms.txt", "_headers", "_redirects",
-              "script.js", "worker.js", "css/site.css", "css/fonts.css",
-              "css/legal.css",
-          ]
-
-          missing = [p for p in required if not (root / p).is_file()]
-          if missing:
-              print("Missing required files:")
-              print("\n".join(missing))
-              sys.exit(1)
-
-          class HTMLRefParser(HTMLParser):
-              def __init__(self):
-                  super().__init__()
-                  self.refs = []
-              def handle_starttag(self, tag, attrs):
-                  attrs = dict(attrs)
-                  for key in ("src", "href"):
-                      value = attrs.get(key)
-                      if value:
-                          self.refs.append(value)
-
-          errors = []
-          for html_file in root.glob("*.html"):
-              parser = HTMLRefParser()
-              parser.feed(html_file.read_text(encoding="utf-8"))
-              for ref in parser.refs:
-                  parsed = urlparse(ref)
-                  if parsed.scheme or ref.startswith("#") or ref.startswith("mailto:") or ref.startswith("tel:"):
-                      continue
-                  path = parsed.path.lstrip("/")
-                  if not path:
-                      continue
-                  # Pretty routes are handled by the Worker, while asset
-                  # references may contain query strings for cache busting.
-                  worker_routes = {"", "about", "contact", "privacy", "terms"}
-                  if path in worker_routes:
-                      continue
-                  target = root / path
-                  if not target.exists():
-                      errors.append(f"{html_file}: missing local reference {ref}")
-
-          index = (root / "index.html").read_text(encoding="utf-8")
-          for asset in re.findall(r'(?:src|href|srcset)=["\']([^"\']+)["\']', index):
-              for item in asset.split(","):
-                  ref = item.strip().split()[0]
-                  parsed = urlparse(ref)
-                  if parsed.scheme or ref.startswith("#"):
-                      continue
-                  # Strip query strings/fragments before checking the
-                  # local filesystem path (e.g. css/site.css?v=...).
-                  asset_path = parsed.path.lstrip("/")
-                  if asset_path in {"about", "contact", "privacy", "terms"}:
-                      continue
-                  target = root / asset_path
-                  if not target.exists():
-                      errors.append(f"index.html: missing asset {ref}")
-
-          try:
-              tree = ET.parse(root / "sitemap.xml")
-              ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
-              urls = [e.text for e in tree.findall("sm:url/sm:loc", ns)]
-              expected = {
-                  "https://burionstudio.com/",
-                  "https://burionstudio.com/about",
-                  "https://burionstudio.com/contact",
-                  "https://burionstudio.com/privacy",
-                  "https://burionstudio.com/terms",
-              }
-              if set(urls) != expected:
-                  errors.append(f"sitemap.xml: expected URLs {sorted(expected)}, found {sorted(urls)}")
-          except ET.ParseError as exc:
-              errors.append(f"sitemap.xml: invalid XML: {exc}")
-
-          if errors:
-              print("Smoke test failures:")
-              print("\n".join(errors))
-              sys.exit(1)
-
-          print("Site smoke tests passed.")
-          PY
           node --check worker.js
           node --check script.js

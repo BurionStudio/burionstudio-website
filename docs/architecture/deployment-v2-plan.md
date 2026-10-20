@@ -1,16 +1,18 @@
-# V2 Deployment Plan
+# Historical deployment proposal — superseded
 
-## Current state
+This file documents an earlier deployment proposal and is retained for project history only. It is **not current operational guidance**.
 
-- Cloudflare Worker project: `cool-wind-2ec9`
+## Current production configuration
+
+- GitHub repository: `BurionStudio/burionstudio-website`
 - Production branch: `main`
-- Static assets are served by the Worker.
-- Preview builds for `stabilization-2026-08-30` now complete successfully after adding `wrangler.jsonc`.
+- Cloudflare Worker: `burionstudio-web`
+- Canonical host: `https://burionstudio.com/`
+- Static content is served through the Worker's `ASSETS` binding.
+- Worker behavior and static-site checks run before the production `wrangler deploy` command.
 
-## Next steps
+## Superseded proposal items
 
-1. Merge the stabilized deployment configuration into `main`.
-2. Verify the production deployment and custom domain.
-3. Add `/api/contact` as a server-side Worker endpoint.
-4. Keep secrets out of Git and configure them as runtime secrets/variables.
-5. Add validation, rate limiting, and spam protection before enabling real mail delivery.
+- The former Worker name `cool-wind-2ec9` is not the current production Worker.
+- The proposed `/api/contact` endpoint was not implemented. The public Contact page uses `mailto:support@burionstudio.com`.
+- Do not add a server-side contact endpoint, email delivery, secrets, or spam controls as part of an unrelated maintenance change. Design and test that feature separately if it becomes a product requirement.
