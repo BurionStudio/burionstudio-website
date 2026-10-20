@@ -192,3 +192,13 @@ test("homepage HEAD ?mode=agent returns JSON headers without a response body", a
   assert.match(response.headers.get("content-type") ?? "", /^application\/json; charset=utf-8$/i);
   assert.equal(await response.text(), "");
 });
+
+
+test("all legacy HTML redirect routes invoke the Worker before static asset serving", async () => {
+  const config = JSON.parse(await readFile(new URL("../wrangler.jsonc", import.meta.url), "utf8"));
+  const runWorkerFirst = new Set(config.assets.run_worker_first);
+
+  for (const route of ["/about.html", "/contact.html", "/privacy.html", "/terms.html"]) {
+    assert.ok(runWorkerFirst.has(route), `wrangler.jsonc must route ${route} through the Worker first`);
+  }
+});
