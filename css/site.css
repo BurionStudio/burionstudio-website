@@ -412,3 +412,15 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:0}
   }
   .footer-nav .footer-social-icon{width:17px!important;height:17px!important}
 }
+
+/* Keep the Instagram mark circular and centered on its own mobile row. */
+@media(max-width:800px){
+  .footer-main .footer-nav .footer-social{display:none!important}
+  .footer-social-wrap{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;margin:0 auto 26px!important}
+  .footer-social-wrap .footer-social{flex:0 0 36px!important;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;margin:0!important;border-radius:50%!important}
+  .footer-social-wrap .footer-social-icon{width:17px!important;height:17px!important}
+}
+@media(min-width:801px){
+  .footer-social-wrap{display:none!important}
+  .footer-main .footer-nav .footer-social{display:inline-flex!important}
+}
