@@ -390,3 +390,11 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:0}
   .redesign-hero .hero-content{width:62%;max-width:610px;padding-right:25px}
   .redesign-hero .hero-image{object-position:60% center}
 }
+
+
+/* Footer social link — compact, accessible and aligned with the studio palette. */
+.footer-social{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;margin-left:2px!important;border:1px solid rgba(215,169,87,.25)!important;border-radius:50%!important;color:var(--gold-light)!important;transition:color .2s ease,border-color .2s ease,background .2s ease,transform .2s ease!important}
+.footer-social-icon{display:block!important;width:16px!important;height:16px!important;max-width:none!important}
+.footer-social:hover,.footer-social:focus-visible{color:#f4f1ea!important;border-color:rgba(215,169,87,.7)!important;background:rgba(215,169,87,.08)!important;transform:translateY(-1px)!important}
+.footer-social:focus-visible{outline:2px solid var(--gold-light)!important;outline-offset:3px!important}
+@media(max-width:800px){.footer-social{margin-left:0!important;width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important}.footer-social-icon{width:15px!important;height:15px!important}}
