@@ -625,12 +625,29 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:0}
 
 
 /* Official Instagram SVG glyph: match the monochrome white footer treatment. */
-.footer-social-icon-instagram{filter:brightness(0) invert(1)!important;}
+.footer-social-icon-instagram{fill:currentColor!important;filter:none!important;}
 
 
-/* Mobile footer fixes: use a transparent monochrome Instagram glyph and prevent description overflow. */
-.footer-social-icon-instagram{filter:none!important;object-fit:contain!important;}
+
+
+/* Mobile footer recovery: keep social SVGs self-contained and copy wrap rules into a cache-busted stylesheet. */
+.footer-social-icon-instagram{fill:currentColor!important;filter:none!important;}
 @media(max-width:800px){
-  .footer-main .footer-brand{width:100%!important;max-width:330px!important;min-width:0!important;}
-  .footer-main .footer-brand p{width:100%!important;max-width:330px!important;min-width:0!important;white-space:normal!important;overflow-wrap:break-word!important;word-break:normal!important;}
+  .footer-main .footer-brand{
+    width:100%!important;
+    max-width:300px!important;
+    min-width:0!important;
+    align-items:center!important;
+  }
+  .footer-main .footer-brand p{
+    display:block!important;
+    width:100%!important;
+    max-width:280px!important;
+    min-width:0!important;
+    margin:10px auto 0!important;
+    white-space:normal!important;
+    overflow-wrap:break-word!important;
+    word-break:normal!important;
+    text-align:center!important;
+  }
 }
