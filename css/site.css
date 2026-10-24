@@ -659,3 +659,10 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:0}
   .footer-social-wrap{margin:12px auto 12px!important}
   .footer-main{padding-bottom:20px!important}
 }
+
+/* Smaller social glyphs; keep generous tap targets. */
+.footer-social-wrap{gap:18px!important}
+.footer-social-wrap .footer-social{width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;flex:0 0 40px!important}
+.footer-social-wrap .footer-social:not(:has(.footer-social-icon-threads)) .footer-social-icon{width:20px!important;height:20px!important;stroke-width:1.8!important}
+.footer-social-wrap .footer-social-icon-threads{width:18px!important;height:19px!important}
+@media(max-width:800px){.footer-social-wrap{gap:18px!important}.footer-social-wrap .footer-social:not(:has(.footer-social-icon-threads)) .footer-social-icon{width:20px!important;height:20px!important}.footer-social-wrap .footer-social-icon-threads{width:18px!important;height:19px!important}}
