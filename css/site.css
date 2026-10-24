@@ -622,3 +622,7 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:0}
     height:22px!important;
   }
 }
+
+
+/* Official Instagram SVG glyph: match the monochrome white footer treatment. */
+.footer-social-icon-instagram{filter:brightness(0) invert(1)!important;}
