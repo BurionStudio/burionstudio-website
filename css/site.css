@@ -434,3 +434,26 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:0}
 
 /* Official Threads 2026 mark: preserve the gold studio palette while using the source SVG silhouette. */
 .footer-social-icon-threads{width:15px!important;height:17px!important;object-fit:contain!important;filter:invert(85%) sepia(33%) saturate(640%) hue-rotate(351deg) brightness(103%) contrast(92%)!important}
+
+
+/* Final footer social polish: separate the buttons and balance both marks optically. */
+.footer-social-wrap{gap:14px!important}
+.footer-social-wrap .footer-social{margin:0!important}
+.footer-social-wrap .footer-social-icon{width:18px!important;height:18px!important}
+.footer-social-wrap .footer-social-icon-threads{
+  width:17px!important;
+  height:19px!important;
+  filter:invert(79%) sepia(36%) saturate(555%) hue-rotate(354deg) brightness(101%) contrast(91%)!important;
+}
+.footer-social-wrap .footer-social:not(:has(.footer-social-icon-threads)) .footer-social-icon{
+  width:19px!important;
+  height:19px!important;
+  stroke-width:2.1;
+}
+@media(max-width:800px){
+  .footer-social-wrap{gap:14px!important}
+  .footer-social-wrap .footer-social{flex:0 0 56px!important;width:56px!important;height:56px!important;min-width:56px!important;min-height:56px!important}
+  .footer-social-wrap .footer-social-icon{width:19px!important;height:19px!important}
+  .footer-social-wrap .footer-social-icon-threads{width:18px!important;height:20px!important}
+  .footer-social-wrap .footer-social:not(:has(.footer-social-icon-threads)) .footer-social-icon{width:20px!important;height:20px!important}
+}
