@@ -19,6 +19,16 @@ function makeEnv(status = 404, body = "static response") {
   };
 }
 
+test("www hostname redirects permanently to the canonical apex host and preserves path and query", async () => {
+  const response = await worker.fetch(
+    new Request("https://www.burionstudio.com/contact?source=www"),
+    makeEnv(200)
+  );
+
+  assert.equal(response.status, 301);
+  assert.equal(response.headers.get("location"), "https://burionstudio.com/contact?source=www");
+});
+
 test("Markdown 404 keeps HTTP 404 and provides a useful Markdown body and discovery links", async () => {
   const request = new Request("https://burionstudio.com/__test-missing-path", {
     headers: { Accept: "text/markdown" }

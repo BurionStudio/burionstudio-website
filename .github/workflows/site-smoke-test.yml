@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
 
 jobs:
   smoke-test:
@@ -27,7 +30,7 @@ jobs:
           node --check script.js
 
   live-production-smoke:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     needs: smoke-test
     runs-on: ubuntu-latest
     steps:
@@ -44,7 +47,14 @@ jobs:
             agent_status=$(curl -sS --max-time 5 -D /tmp/burion-agent.headers -o /tmp/burion-agent.json -w '%{http_code}' "$base/?mode=agent" 2>/dev/null || true)
             llms_status=$(curl -sS --max-time 5 -o /tmp/burion-llms.txt -w '%{http_code}' "$base/llms.txt" 2>/dev/null || true)
             robots_status=$(curl -sS --max-time 5 -o /tmp/burion-robots.txt -w '%{http_code}' "$base/robots.txt" 2>/dev/null || true)
+            sitemap_status=$(curl -sS --max-time 5 -o /tmp/burion-sitemap.xml -w '%{http_code}' "$base/sitemap.xml" 2>/dev/null || true)
             security_status=$(curl -sS --max-time 5 -o /tmp/burion-security.txt -w '%{http_code}' "$base/.well-known/security.txt" 2>/dev/null || true)
+            about_status=$(curl -sS --max-time 5 -o /dev/null -w '%{http_code}' "$base/about" 2>/dev/null || true)
+            contact_status=$(curl -sS --max-time 5 -o /dev/null -w '%{http_code}' "$base/contact" 2>/dev/null || true)
+            privacy_status=$(curl -sS --max-time 5 -o /dev/null -w '%{http_code}' "$base/privacy" 2>/dev/null || true)
+            terms_status=$(curl -sS --max-time 5 -o /dev/null -w '%{http_code}' "$base/terms" 2>/dev/null || true)
+            www_status=$(curl -sS --max-time 5 -D /tmp/burion-www.headers -o /dev/null -w '%{http_code}' "https://www.burionstudio.com/" 2>/dev/null || true)
+            http_status=$(curl -sS --max-time 5 -D /tmp/burion-http.headers -o /dev/null -w '%{http_code}' "http://burionstudio.com/" 2>/dev/null || true)
             home_headers_status=$(curl -sS --max-time 5 -D /tmp/burion-home.headers -o /dev/null -w '%{http_code}' "$base/" 2>/dev/null || true)
             legacy_status=$(curl -sS --max-time 5 -D /tmp/burion-legacy.headers -o /dev/null -w '%{http_code}' "$base/about.html" 2>/dev/null || true)
             deployment_doc_status=$(curl -sS --max-time 5 -o /dev/null -w '%{http_code}' "$base/DEPLOYMENT.md" 2>/dev/null || true)
@@ -53,9 +63,18 @@ jobs:
                [ "$agent_status" = "200" ] &&
                [ "$llms_status" = "200" ] &&
                [ "$robots_status" = "200" ] &&
+               [ "$sitemap_status" = "200" ] &&
                [ "$security_status" = "200" ] &&
+               [ "$about_status" = "200" ] &&
+               [ "$contact_status" = "200" ] &&
+               [ "$privacy_status" = "200" ] &&
+               [ "$terms_status" = "200" ] &&
+               [ "$www_status" = "301" ] &&
+               [ "$http_status" = "301" ] &&
                [ "$home_headers_status" = "200" ] &&
                [ "$legacy_status" = "301" ] &&
+               grep -qi '^location: https://burionstudio.com/' /tmp/burion-www.headers &&
+               grep -qi '^location: https://burionstudio.com/' /tmp/burion-http.headers &&
                [ "$deployment_doc_status" = "404" ] &&
                grep -qi '^strict-transport-security:' /tmp/burion-home.headers &&
                grep -qi '^content-security-policy:' /tmp/burion-home.headers &&
@@ -70,7 +89,7 @@ jobs:
               exit 0
             fi
 
-            last_state="attempt=$attempt home=$home_status agent=$agent_status llms=$llms_status robots=$robots_status security=$security_status headers=$home_headers_status legacy=$legacy_status deployment_doc=$deployment_doc_status"
+            last_state="attempt=$attempt home=$home_status agent=$agent_status llms=$llms_status robots=$robots_status sitemap=$sitemap_status security=$security_status about=$about_status contact=$contact_status privacy=$privacy_status terms=$terms_status www=$www_status http=$http_status headers=$home_headers_status legacy=$legacy_status deployment_doc=$deployment_doc_status"
             echo "Waiting for Cloudflare to serve the expected release: $last_state"
             sleep 5
             attempt=$((attempt + 1))
