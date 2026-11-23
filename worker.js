@@ -398,6 +398,13 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    // Keep one canonical host for SEO, cookies, caches, and analytics.
+    if (url.hostname.toLowerCase() === "www.burionstudio.com") {
+      const canonicalUrl = new URL(url.toString());
+      canonicalUrl.hostname = "burionstudio.com";
+      return Response.redirect(canonicalUrl.toString(), 301);
+    }
+
     const redirects = {
       "/about.html": "/about",
       "/contact.html": "/contact",
