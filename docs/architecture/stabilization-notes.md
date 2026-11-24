@@ -8,7 +8,7 @@
 - Contact uses a `mailto:` flow; no website-side form submission endpoint exists.
 - Canonical public pages, privacy/terms documents, sitemap, `llms.txt`, robots policy, and `.well-known/security.txt` are part of the release surface.
 - Worker behavior tests and static-site smoke tests run in GitHub Actions.
-- GitHub Actions runs the Node test suite and static-site smoke tests independently. Cloudflare Workers Builds is connected to this GitHub repository, watches `main`, runs the same Node/syntax checks, and executes the pinned Wrangler production deploy command; pull requests use the preview upload command.
+- GitHub Actions runs the Node test suite and static-site smoke tests independently. Cloudflare Workers Builds is connected to this GitHub repository, watches `main`, runs the same Node/syntax checks, and executes the pinned Wrangler production deploy command; pull requests use the pinned Wrangler Preview command.
 - The live agent-mode JSON, homepage, and `llms.txt` were manually verified on 2026-10-20.
 
 ## Follow-up candidates
