@@ -192,3 +192,30 @@ test("repository-only documentation and build internals are excluded from public
     assert.ok(ignore.split(/\r?\n/).includes(pattern), `.assetsignore should exclude ${pattern}`);
   }
 });
+
+
+
+test("GitHub Actions workflows use read-only token permissions and immutable action pins", async () => {
+  const workflowPaths = [
+    ".github/workflows/worker-tests.yml",
+    ".github/workflows/site-smoke-test.yml"
+  ];
+
+  for (const relativePath of workflowPaths) {
+    const workflow = await readFile(path.join(root, relativePath), "utf8");
+    assert.ok(workflow.includes("permissions:\n  contents: read"), relativePath);
+    assert.ok(
+      workflow.includes("uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4"),
+      relativePath
+    );
+    assert.ok(!workflow.includes("actions/checkout@v4"), relativePath);
+    assert.ok(!workflow.includes("actions/setup-node@v4"), relativePath);
+    if (workflow.includes("actions/setup-node")) {
+      assert.ok(
+        workflow.includes("uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4"),
+        relativePath
+      );
+    }
+    assert.ok(!workflow.includes("contents: write"), relativePath);
+  }
+});
