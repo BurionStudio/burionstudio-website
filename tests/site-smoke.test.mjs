@@ -263,3 +263,12 @@ test("privacy policy matches the current local-only frontend behavior", async ()
   assert.doesNotMatch(script, /\b(?:fetch|XMLHttpRequest|sendBeacon|localStorage|sessionStorage|document\.cookie)\b/i,
     "The current interface script should not make network calls or persist visitor data");
 });
+
+
+test("Wrangler config defines an explicit Worker Previews configuration", async () => {
+  const configText = await readFile(path.join(root, "wrangler.jsonc"), "utf8");
+  const config = JSON.parse(configText);
+
+  assert.equal(config.name, "burionstudio-web");
+  assert.deepEqual(config.previews, {});
+});
