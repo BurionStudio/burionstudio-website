@@ -23,8 +23,8 @@ The verified Cloudflare configuration is:
   `node --test tests/worker.test.mjs tests/site-smoke.test.mjs && node --check worker.js && node --check script.js`
 - Production deploy command:
   `npx --yes wrangler@4.151.2 deploy`
-- Preview deploy command:
-  `npx --yes wrangler@4.151.2 versions upload`
+- Preview command:
+  `npx --yes wrangler@4.151.2 preview`
 
 Cloudflare runs the configured build checks, then deploys the Worker for commits on `main`. Pull requests use the preview command and do not promote the preview to production. The repository also has GitHub Actions for independent tests and a separate GitHub Pages deployment workflow.
 
