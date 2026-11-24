@@ -230,3 +230,45 @@ test("homepage avoids preloading the non-critical DM Sans 600 font", async () =>
   assert.ok(html.includes('href="assets/fonts/playfair-display-600.woff2"'));
   assert.ok(!html.includes('rel="preload" as="font" href="assets/fonts/dm-sans-600.woff2"'));
 });
+
+
+test("sitemap lastmod values are valid ISO dates and are not future-dated", async () => {
+  const sitemap = await readFile(path.join(root, "sitemap.xml"), "utf8");
+  const dates = [...sitemap.matchAll(/<lastmod>\s*(\d{4}-\d{2}-\d{2})\s*<\/lastmod>/gi)]
+    .map((match) => match[1]);
+  const urls = [...sitemap.matchAll(/<loc>\s*([^<]+?)\s*<\/loc>/gi)];
+
+  assert.equal(dates.length, urls.length, "Every sitemap URL should have one lastmod date");
+  const today = new Date().toISOString().slice(0, 10);
+
+  for (const date of dates) {
+    const parsed = new Date(date + "T00:00:00Z");
+    assert.ok(Number.isFinite(parsed.getTime()), `Invalid sitemap lastmod date: ${date}`);
+    assert.equal(parsed.toISOString().slice(0, 10), date, `Non-canonical sitemap date: ${date}`);
+    assert.ok(date <= today, `Sitemap lastmod date is in the future: ${date}`);
+  }
+});
+
+test("privacy policy matches the current local-only frontend behavior", async () => {
+  const privacy = await readFile(path.join(root, "privacy.html"), "utf8");
+  const worker = await readFile(path.join(root, "worker.js"), "utf8");
+  const script = await readFile(path.join(root, "script.js"), "utf8");
+  const privacySummary = "The website's JavaScript supports interface functionality such as the mobile navigation and project/capability carousels.";
+
+  assert.match(privacy, /Last updated: 24 November 2026/);
+  assert.match(worker, /Last updated: 24 November 2026/);
+  assert.ok(privacy.includes(privacySummary), "HTML privacy policy should describe current UI behavior");
+  assert.ok(worker.includes(privacySummary), "Markdown privacy policy should match the HTML policy");
+  assert.doesNotMatch(privacy, /visual reveal effects/i);
+  assert.doesNotMatch(script, /\b(?:fetch|XMLHttpRequest|sendBeacon|localStorage|sessionStorage|document\.cookie)\b/i,
+    "The current interface script should not make network calls or persist visitor data");
+});
+
+
+test("Wrangler config defines an explicit Worker Previews configuration", async () => {
+  const configText = await readFile(path.join(root, "wrangler.jsonc"), "utf8");
+  const config = JSON.parse(configText);
+
+  assert.equal(config.name, "burionstudio-web");
+  assert.deepEqual(config.previews, {});
+});

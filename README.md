@@ -22,7 +22,7 @@ node --check worker.js
 node --check script.js
 ```
 
-GitHub Actions runs Worker behavior and static-site smoke tests on pushes to `main` and pull requests. Cloudflare Workers Builds runs the Node tests and syntax checks before deploying the production Worker.
+GitHub Actions runs Worker behavior and static-site smoke tests on pushes to `main` and pull requests. Cloudflare Workers Builds is also connected to this repository: it runs the configured checks and automatically deploys the Worker when changes are pushed to `main`. Pull requests run preview builds. GitHub Pages remains a separate deployment path. See [DEPLOYMENT.md](DEPLOYMENT.md) for the verified release process.
 
 ## Deployment
 
