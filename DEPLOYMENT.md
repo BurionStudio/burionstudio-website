@@ -5,32 +5,52 @@
 - GitHub repository: `BurionStudio/burionstudio-website`
 - Production branch: `main`
 - Cloudflare Worker: `burionstudio-web`
-- Canonical host: `https://burionstudio.com/`
+- Canonical site: `https://burionstudio.com/`
 - Agent mode: `https://burionstudio.com/?mode=agent`
 
-Cloudflare Workers Builds watches `main`. Its build command runs the Worker behavior tests, static-site smoke tests, and JavaScript syntax checks before `npx wrangler deploy`. A failed check should prevent that build from deploying. GitHub Actions runs the checks independently. GitHub Pages is a separate deployment path and its success is not evidence that the production Worker has updated.
+## Verified deployment model
 
-## Release verification
+As of 24 November 2026, the repository has separate GitHub Pages and Cloudflare Worker deployment paths:
 
-For each production change:
+- GitHub Actions runs the Worker behavior tests, static-site smoke tests, and JavaScript syntax checks.
+- GitHub Pages is deployed by its own workflow.
+- The Cloudflare account API currently returns no Workers Builds configuration for `burionstudio-web`. Therefore, a push to `main` does **not** automatically deploy the production Worker.
+- The Worker has a separate Wrangler deployment history. The latest deployment must be checked independently from the GitHub Pages workflow.
 
-1. Confirm the latest GitHub commit on `main` is the intended change.
-2. Confirm Cloudflare Workers Builds has a build for that exact commit SHA and the build outcome is `success`.
-3. Confirm Cloudflare's active production deployment routes 100% of traffic to the newly deployed version.
-4. Check `https://burionstudio.com/` returns the normal homepage.
-5. Check `https://burionstudio.com/?mode=agent` returns HTTP 200 with `Content-Type: application/json` and `kind: "agent-mode"`.
-6. Check `https://burionstudio.com/llms.txt` and `https://burionstudio.com/robots.txt` remain accessible.
+Do not treat a successful GitHub Pages build as proof that the production Worker has been updated.
 
-A normal HTML homepage response for `?mode=agent` means the intended Worker code is not active for that request. Do not mark the release as verified based on a GitHub Pages build alone.
+## Worker release process
+
+When a change affects `worker.js`, `wrangler.jsonc`, Worker routing, or Worker-served assets:
+
+1. Confirm the intended commit is on `main`.
+2. Run the repository checks from a trusted development environment:
+   `node --test tests/worker.test.mjs tests/site-smoke.test.mjs`
+   `node --check worker.js`
+   `node --check script.js`
+3. Deploy the Worker from an authenticated environment with the intended Cloudflare account selected, using the pinned Wrangler version:
+   `npx wrangler@4.151.2 deploy`
+4. In Cloudflare, confirm the new Worker version is deployed and receives 100% of production traffic.
+5. Verify the homepage, `/?mode=agent`, `/llms.txt`, `/robots.txt`, canonical routes, redirects, and security headers.
+
+A Worker version upload alone is not sufficient; verify the deployment allocation as well.
+
+## GitHub Pages release process
+
+For static-site changes:
+
+1. Confirm the intended commit is on `main`.
+2. Confirm the `pages build and deployment` workflow completed successfully.
+3. Run the live production smoke workflow and confirm its checks passed.
+
+If a change affects both Worker logic and static assets served by the Worker, verify both deployment paths independently.
 
 ## Rollback and safety
 
-Do not delete the Worker, its custom domains, or the repository connection to address an isolated build failure. Investigate the failing build logs first. Change production configuration only when the change has been reviewed and can be verified after deployment.
+Do not delete the Worker, its custom domains, or the repository connection to address an isolated build failure. Investigate the failing build or deployment logs first. Change production configuration only when the change has been reviewed and can be verified after deployment.
 
-## Automatic-trigger check
+## Future automation
 
-A low-risk documentation commit can be used to test the GitHub-to-Cloudflare trigger. Verify that Cloudflare records a build for the exact commit and advances the active production version before calling the trigger healthy.
+A GitHub-to-Cloudflare automatic Worker deployment is not currently configured. To enable it, create a narrowly scoped Cloudflare API token and store it as a GitHub Actions repository secret named `CLOUDFLARE_API_TOKEN`. Then add a reviewed deployment workflow that runs only after the existing checks pass and uses the pinned Wrangler version. Do not commit the token, place it in workflow logs, or use a broad account-wide token.
 
-## Reproducible deployment tooling
-
-Cloudflare Workers Builds runs the test/syntax checks before deployment. Production and preview deploy commands are pinned to `wrangler@4.151.2` rather than allowing `npx` to silently select an arbitrary latest release. Review the Wrangler changelog and intentionally update both Cloudflare build settings when upgrading this pin.
+The current repository connection does not expose GitHub Actions secret values, so the presence or absence of that secret has not been verified.
