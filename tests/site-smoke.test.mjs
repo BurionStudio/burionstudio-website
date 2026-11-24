@@ -222,3 +222,16 @@ test("GitHub Actions workflows use read-only token permissions and immutable act
     assert.ok(!workflow.includes("contents: write"), relativePath);
   }
 });
+
+test("homepage preloads only fonts needed for the initial viewport", async () => {
+  const html = await readFile(path.join(root, "index.html"), "utf8");
+  const preloadedFonts = [...html.matchAll(/<link\\b(?=[^>]*\\brel=["']preload["'])(?=[^>]*\\bas=["']font["'])[^>]*\\bhref=["']([^"']+)["'][^>]*>/gi)]
+    .map((match) => match[1])
+    .sort();
+
+  assert.deepEqual(preloadedFonts, [
+    "assets/fonts/dm-sans-400.woff2",
+    "assets/fonts/dm-sans-700.woff2",
+    "assets/fonts/playfair-display-600.woff2"
+  ]);
+});
