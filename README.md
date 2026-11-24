@@ -22,7 +22,7 @@ node --check worker.js
 node --check script.js
 ```
 
-GitHub Actions runs Worker behavior and static-site smoke tests on pushes to `main` and pull requests. Cloudflare Workers Builds runs the Node tests and syntax checks before deploying the production Worker.
+GitHub Actions runs Worker behavior and static-site smoke tests on pushes to `main` and pull requests. The Cloudflare account currently has no Workers Builds configuration for `burionstudio-web`, so pushing to `main` does not automatically deploy the Worker. See [DEPLOYMENT.md](DEPLOYMENT.md) for the verified release process.
 
 ## Deployment
 
