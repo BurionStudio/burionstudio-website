@@ -194,6 +194,7 @@ test("repository-only documentation and build internals are excluded from public
 });
 
 
+
 test("GitHub Actions workflows use read-only token permissions and immutable action pins", async () => {
   const workflowPaths = [
     ".github/workflows/worker-tests.yml",
@@ -202,12 +203,19 @@ test("GitHub Actions workflows use read-only token permissions and immutable act
 
   for (const relativePath of workflowPaths) {
     const workflow = await readFile(path.join(root, relativePath), "utf8");
-    assert.match(workflow, /^permissions:\s*\\n\\s+contents:\\s*read\\s*$/m, relativePath);
-    assert.match(workflow, /uses:\\s*actions\\/checkout@[a-f0-9]{40}/, relativePath);
-    assert.doesNotMatch(workflow, /uses:\\s*actions\\/(?:checkout|setup-node)@v\\d+/i, relativePath);
+    assert.ok(workflow.includes("permissions:\n  contents: read"), relativePath);
+    assert.ok(
+      workflow.includes("uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4"),
+      relativePath
+    );
+    assert.ok(!workflow.includes("actions/checkout@v4"), relativePath);
+    assert.ok(!workflow.includes("actions/setup-node@v4"), relativePath);
     if (workflow.includes("actions/setup-node")) {
-      assert.match(workflow, /uses:\\s*actions\\/setup-node@[a-f0-9]{40}/, relativePath);
+      assert.ok(
+        workflow.includes("uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4"),
+        relativePath
+      );
     }
-    assert.doesNotMatch(workflow, /^\\s+contents:\\s*write\\s*$/m, relativePath);
+    assert.ok(!workflow.includes("contents: write"), relativePath);
   }
 });
