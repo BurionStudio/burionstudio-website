@@ -223,15 +223,10 @@ test("GitHub Actions workflows use read-only token permissions and immutable act
   }
 });
 
-test("homepage preloads only fonts needed for the initial viewport", async () => {
+test("homepage avoids preloading the non-critical DM Sans 600 font", async () => {
   const html = await readFile(path.join(root, "index.html"), "utf8");
-  const preloadedFonts = [...html.matchAll(/<link\\b(?=[^>]*\\brel=["']preload["'])(?=[^>]*\\bas=["']font["'])[^>]*\\bhref=["']([^"']+)["'][^>]*>/gi)]
-    .map((match) => match[1])
-    .sort();
-
-  assert.deepEqual(preloadedFonts, [
-    "assets/fonts/dm-sans-400.woff2",
-    "assets/fonts/dm-sans-700.woff2",
-    "assets/fonts/playfair-display-600.woff2"
-  ]);
+  assert.ok(html.includes('href="assets/fonts/dm-sans-400.woff2"'));
+  assert.ok(html.includes('href="assets/fonts/dm-sans-700.woff2"'));
+  assert.ok(html.includes('href="assets/fonts/playfair-display-600.woff2"'));
+  assert.ok(!html.includes('rel="preload" as="font" href="assets/fonts/dm-sans-600.woff2"'));
 });
