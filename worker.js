@@ -146,7 +146,7 @@ description: Privacy Policy for Burion Studio.
 
 # Privacy Policy
 
-Last updated: 2 September 2026
+Last updated: 24 November 2026
 
 ## 1. Overview
 
@@ -162,7 +162,7 @@ The Contact section uses a **mailto** link. When you select the email address, y
 
 The current website does not intentionally use advertising cookies, analytics cookies, tracking pixels, user accounts, or browser-based storage such as localStorage to identify or track visitors.
 
-The website's JavaScript is limited to interface functionality such as the mobile navigation, section carousels, responsive behavior, accessibility states, and visual reveal effects. It does not collect or send personal information to Burion Studio.
+The website's JavaScript supports interface functionality such as the mobile navigation and project/capability carousels. It does not make analytics or advertising requests, create visitor profiles, or collect and send personal information to Burion Studio.
 
 ## 4. Technical information and hosting
 
